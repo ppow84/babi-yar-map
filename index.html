@@ -3,32 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Babi Yar — September 29–30, 1941</title>
+<title>The March to Babi Yar — September 29, 1941</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="anonymous"></script>
 <script>if(typeof L==='undefined'){document.write('<scr'+'ipt src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"><\/scr'+'ipt>')}</script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;700;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
   :root {
-    --bg: #0c0b0a;
-    --bg2: #141311;
-    --bg3: #1c1b17;
-    --bg4: #242219;
-    --border: #28261f;
-    --border2: #35322a;
-    --text: #ede6d8;
-    --text2: #b8ad9a;
-    --text3: #887b68;
-    --text4: #5e5445;
-    --accent: #d4654a;
+    --bg: #111110;
+    --bg2: #1a1916;
+    --bg3: #222018;
+    --border: #302c24;
+    --border2: #3a3529;
+    --text: #e8e0d4;
+    --text2: #b0a494;
+    --text3: #8b7b65;
+    --text4: #6b5f50;
+    --accent: #c45c3a;
     --accent2: #8b4513;
-    --accent3: #9b2020;
-    --gold: #c9a96e;
+    --accent3: #8b1a1a;
     --panel-w: 420px;
   }
 
-  * { margin:0; padding:0; box-sizing:border-box; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     background: var(--bg);
@@ -40,258 +39,350 @@
     flex-direction: column;
   }
 
-  /* ===== HERO SPLASH ===== */
-  .hero {
-    position: fixed; inset: 0; z-index: 5000;
-    background: var(--bg);
-    transition: opacity 1s ease, visibility 1s;
-  }
-  .hero.dismissed { opacity: 0; pointer-events: none; visibility: hidden; }
-  .hero-images { position: absolute; inset: 0; }
-  .hero-img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 2s ease;
-  }
-  .hero-img.active { opacity: 1; }
-  .hero-grad {
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg,
-      rgba(12,11,10,0.15) 0%,
-      rgba(12,11,10,0.45) 40%,
-      rgba(12,11,10,0.88) 75%,
-      rgba(12,11,10,0.98) 100%);
-  }
-  .hero-content {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    padding: 0 72px 64px;
-    max-width: 720px;
-  }
-  .hero-kicker {
-    font-family: 'Inter', sans-serif;
-    font-size: 10px; text-transform: uppercase;
-    letter-spacing: 0.2em; color: var(--accent);
-    margin-bottom: 20px; font-weight: 500;
-  }
-  .hero-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 5rem; font-weight: 900;
-    color: #fff; line-height: 1;
-    margin-bottom: 14px;
-    letter-spacing: -0.02em;
-  }
-  .hero-date {
-    font-family: 'EB Garamond', serif;
-    font-size: 1.4rem; color: var(--text2);
-    margin-bottom: 28px; font-style: italic;
-  }
-  .hero-text {
-    font-size: 14px; line-height: 1.75; color: var(--text2);
-    max-width: 540px; margin-bottom: 36px;
-  }
-  .hero-btn {
-    font-family: 'Inter', sans-serif;
-    font-size: 12px; letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text); background: none;
-    border: 1px solid var(--border2);
-    padding: 14px 32px; cursor: pointer;
-    transition: all 0.25s;
-  }
-  .hero-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .hero-credit {
-    position: absolute; bottom: 14px; right: 24px;
-    font-size: 9px; color: rgba(255,255,255,0.2);
-    font-style: italic;
-  }
-
-  /* ===== TOP BAR ===== */
+  /* === TOP BAR === */
   .topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 24px; height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
     background: var(--bg2);
     border-bottom: 1px solid var(--border);
-    flex-shrink: 0; z-index: 500;
+    flex-shrink: 0;
+    z-index: 500;
   }
-  .topbar h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 15px; font-weight: 700;
-    color: var(--text); letter-spacing: 0.01em;
-  }
-  .topbar h1 span {
-    font-weight: 400; color: var(--text3);
+  .topbar-left h1 {
     font-family: 'EB Garamond', serif;
-    font-style: italic; font-size: 13px;
-    margin-left: 10px;
+    font-size: 1.5em;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: 0.01em;
+    line-height: 1.2;
   }
-  .topbar-right { display: flex; gap: 6px; }
+  .topbar-left .sub {
+    font-size: 0.75em;
+    color: var(--text3);
+    font-weight: 300;
+  }
+  .topbar-right {
+    display: flex;
+    gap: 8px;
+  }
   .topbar-btn {
-    background: none; border: 1px solid var(--border);
-    color: var(--text3); font-family: 'Inter', sans-serif;
-    font-size: 10px; padding: 4px 12px;
-    cursor: pointer; transition: all 0.15s;
-    letter-spacing: 0.04em; text-transform: uppercase;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    color: var(--text2);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
   }
-  .topbar-btn:hover { color: var(--text); border-color: var(--border2); }
+  .topbar-btn:hover { background: var(--border2); color: var(--text); }
+  .topbar-btn.active { background: var(--accent2); color: var(--text); border-color: var(--accent); }
 
-  /* ===== MAIN LAYOUT ===== */
-  .main { display: flex; flex: 1; overflow: hidden; }
-  #map { flex: 1; min-width: 0; }
+  /* === MAIN LAYOUT === */
+  .main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
 
-  /* ===== SIDE PANEL ===== */
+  #map {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* === SIDE PANEL === */
   .panel {
-    width: var(--panel-w); background: var(--bg2);
+    width: var(--panel-w);
+    background: var(--bg2);
     border-left: 1px solid var(--border);
-    overflow-y: auto; flex-shrink: 0;
+    overflow-y: auto;
+    flex-shrink: 0;
     transition: margin-right 0.3s ease;
   }
   .panel.collapsed { margin-right: calc(var(--panel-w) * -1); }
 
+  /* === TABS === */
   .tab-bar {
-    display: flex; border-bottom: 1px solid var(--border);
-    background: var(--bg); position: sticky; top: 0; z-index: 10;
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg3);
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
   .tab-btn {
-    flex: 1; background: none; border: none;
-    color: var(--text4); font-family: 'Inter', sans-serif;
-    font-size: 10px; font-weight: 500;
-    padding: 12px 8px; cursor: pointer;
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text3);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 10px 8px;
+    cursor: pointer;
     border-bottom: 2px solid transparent;
     transition: all 0.15s;
-    text-transform: uppercase; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
   }
-  .tab-btn:hover { color: var(--text3); }
+  .tab-btn:hover { color: var(--text2); }
   .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
-  .panel-section { padding: 18px 20px; border-bottom: 1px solid var(--border); }
-
-  /* ===== EPIGRAPH ===== */
-  .panel-epigraph {
-    font-family: 'EB Garamond', serif;
-    font-style: italic; font-size: 14px;
-    line-height: 1.6; color: var(--gold);
-    padding: 20px 22px; border-bottom: 1px solid var(--border);
-    opacity: 0.85;
-  }
-  .panel-epigraph .attr {
-    font-style: normal; font-size: 10.5px;
-    color: var(--text4); margin-top: 6px;
-    font-family: 'Inter', sans-serif;
+  .panel-section {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border);
   }
 
-  /* ===== WAYPOINT CARDS ===== */
+  /* === WAYPOINT CARDS === */
   .wp-card {
-    padding: 16px 20px; border-bottom: 1px solid var(--border);
-    cursor: pointer; transition: background 0.15s; position: relative;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
   }
   .wp-card:hover { background: var(--bg3); }
-  .wp-card.active { background: var(--bg3); border-left: 3px solid var(--accent); padding-left: 17px; }
+  .wp-card.active { background: var(--bg3); border-left: 3px solid var(--accent); padding-left: 15px; }
+
   .wp-num {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 22px; height: 22px; border-radius: 50%;
-    background: var(--accent2); color: var(--text);
-    font-size: 11px; font-weight: 600;
-    margin-right: 8px; flex-shrink: 0; vertical-align: top;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent2);
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 8px;
+    flex-shrink: 0;
+    vertical-align: top;
   }
   .wp-card.active .wp-num,
   .wp-card[data-final="true"] .wp-num { background: var(--accent3); }
-  .wp-title { font-weight: 500; font-size: 13px; color: var(--text); display: inline; }
-  .wp-dist { font-size: 10px; color: var(--text4); font-weight: 400; margin-left: 6px; }
-  .wp-time { font-size: 10.5px; color: var(--text4); margin-top: 3px; }
-  .wp-detail { display: none; margin-top: 12px; }
+
+  .wp-title {
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--text);
+    display: inline;
+  }
+  .wp-dist {
+    font-size: 10px;
+    color: var(--text4);
+    font-weight: 400;
+    margin-left: 6px;
+  }
+
+  .wp-time {
+    font-size: 10.5px;
+    color: var(--text4);
+    margin-top: 3px;
+  }
+
+  .wp-detail {
+    display: none;
+    margin-top: 10px;
+  }
   .wp-card.active .wp-detail { display: block; }
-  .wp-desc { font-size: 12.5px; line-height: 1.7; color: var(--text2); margin-bottom: 12px; }
+
+  .wp-desc {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text2);
+    margin-bottom: 10px;
+  }
+
   .wp-testimony {
     font-family: 'EB Garamond', serif;
-    font-style: italic; font-size: 14.5px;
-    line-height: 1.55; color: var(--gold);
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #c8b898;
     border-left: 2px solid var(--border2);
-    padding: 6px 0 6px 14px; margin-bottom: 12px;
+    padding: 4px 0 4px 12px;
+    margin-bottom: 10px;
   }
   .wp-testimony .src {
-    font-style: normal; font-size: 10px;
-    color: var(--text4); display: block; margin-top: 5px;
-    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-size: 10.5px;
+    color: var(--text4);
+    display: block;
+    margin-top: 4px;
   }
-  .wp-photos { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
-  .wp-photos img {
-    height: 80px; border-radius: 2px;
-    border: 1px solid var(--border);
-    cursor: pointer; transition: all 0.2s; object-fit: cover;
-  }
-  .wp-photos img:hover { border-color: var(--accent); transform: scale(1.03); }
 
-  /* ===== TWEET THREAD ===== */
-  .thread-line { position: relative; padding-left: 44px; }
+  .wp-photos {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .wp-photos img {
+    height: 80px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    cursor: pointer;
+    transition: all 0.15s;
+    object-fit: cover;
+  }
+  .wp-photos img:hover {
+    border-color: var(--accent);
+    transform: scale(1.02);
+  }
+
+  /* === EPIGRAPH === */
+  .panel-epigraph {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #a09080;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .panel-epigraph .attr {
+    font-style: normal;
+    font-size: 10.5px;
+    color: var(--text4);
+    margin-top: 4px;
+  }
+
+  /* === TWEET THREAD === */
+  .thread-line {
+    position: relative;
+    padding-left: 44px;
+  }
   .thread-line::before {
-    content: ''; position: absolute; left: 18px;
-    top: 0; bottom: 0; width: 1px;
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
     background: var(--border2);
   }
   .tweet {
-    position: relative; padding: 18px 20px 18px 0;
+    position: relative;
+    padding: 16px 18px 16px 0;
     border-bottom: 1px solid var(--border);
   }
   .tweet:last-child { border-bottom: none; }
   .tweet-avatar {
-    position: absolute; left: -32px; top: 20px;
-    width: 26px; height: 26px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 10px; font-weight: 700; color: var(--text); z-index: 2;
+    position: absolute;
+    left: -32px;
+    top: 18px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+    z-index: 2;
   }
   .tweet-avatar.order { background: #6b3a2a; }
   .tweet-avatar.report { background: #4a2a2a; }
   .tweet-avatar.military { background: #3a4a2a; }
   .tweet-avatar.witness { background: #2a3a4a; }
   .tweet-avatar.aerial { background: #3a3a4a; }
-  .tweet-avatar.press { background: #4a3a5a; }
 
-  .tweet-header { display: flex; align-items: baseline; gap: 6px; margin-bottom: 2px; flex-wrap: wrap; }
-  .tweet-name { font-weight: 600; font-size: 13px; color: var(--text); }
-  .tweet-handle { font-size: 11px; color: var(--text4); }
-  .tweet-date { font-size: 11px; color: var(--text4); }
+  .tweet-header {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 2px;
+    flex-wrap: wrap;
+  }
+  .tweet-name {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .tweet-handle {
+    font-size: 11px;
+    color: var(--text4);
+  }
+  .tweet-date {
+    font-size: 11px;
+    color: var(--text4);
+  }
   .tweet-label {
-    font-size: 8px; text-transform: uppercase;
-    letter-spacing: 0.1em; font-weight: 600;
-    padding: 2px 6px; border-radius: 2px; display: inline-block;
+    font-size: 8.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    padding: 1px 5px;
+    border-radius: 2px;
+    display: inline-block;
   }
   .tweet-label.order { background: #6b3a2a; color: #e8c8a8; }
   .tweet-label.report { background: #4a2a2a; color: #d8a8a8; }
   .tweet-label.military { background: #3a4a2a; color: #a8d8a8; }
   .tweet-label.witness { background: #2a3a4a; color: #a8c8d8; }
   .tweet-label.aerial { background: #3a3a4a; color: #b8b8d8; }
-  .tweet-label.press { background: #4a3a5a; color: #c8b8d8; }
 
-  .tweet-body { font-size: 13px; line-height: 1.65; color: var(--text2); margin-top: 8px; }
+  .tweet-body {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text2);
+    margin-top: 6px;
+  }
   .tweet-body strong { color: var(--text); font-weight: 500; }
+
   .tweet-quote {
     font-family: 'EB Garamond', serif;
-    font-style: italic; font-size: 15px;
-    line-height: 1.55; color: var(--gold);
+    font-style: italic;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: #c8b898;
     border-left: 2px solid var(--accent3);
-    padding: 8px 0 8px 14px; margin: 12px 0;
+    padding: 6px 0 6px 12px;
+    margin: 10px 0;
   }
   .tweet-quote em { color: var(--text); font-style: italic; font-weight: 500; }
+
   .tweet-german {
-    font-size: 11.5px; line-height: 1.5; color: var(--text4);
-    border-left: 2px solid var(--border); padding: 4px 0 4px 12px;
-    margin: 8px 0; font-style: italic;
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--text4);
+    border-left: 2px solid var(--border);
+    padding: 4px 0 4px 12px;
+    margin: 8px 0;
+    font-style: italic;
   }
   .tweet-german-label {
-    font-style: normal; font-size: 9px; text-transform: uppercase;
-    letter-spacing: 0.08em; color: var(--text4); margin-bottom: 2px;
+    font-style: normal;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text4);
+    margin-bottom: 2px;
   }
+
   .tweet-note {
-    font-size: 11px; color: var(--text3); line-height: 1.55;
-    margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text3);
+    line-height: 1.5;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
   }
+
   .tweet-imgs {
-    display: grid; gap: 3px; margin-top: 12px;
-    border-radius: 6px; overflow: hidden; border: 1px solid var(--border);
+    display: grid;
+    gap: 3px;
+    margin-top: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border2);
   }
   .tweet-imgs.g1 { grid-template-columns: 1fr; }
   .tweet-imgs.g2 { grid-template-columns: 1fr 1fr; }
@@ -299,274 +390,349 @@
   .tweet-imgs.g3 img:first-child { grid-row: span 2; }
   .tweet-imgs.g4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
   .tweet-imgs img {
-    width: 100%; height: 100%;
-    min-height: 80px; max-height: 180px;
-    object-fit: cover; cursor: pointer;
-    transition: opacity 0.2s;
+    width: 100%;
+    height: 100%;
+    min-height: 80px;
+    max-height: 180px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: opacity 0.15s;
   }
-  .tweet-imgs img:hover { opacity: 0.8; }
-  .tweet-thread-num { font-size: 9px; color: var(--text4); margin-top: 10px; letter-spacing: 0.05em; }
+  .tweet-imgs img:hover { opacity: 0.85; }
 
-  /* ===== DOCUMENT CARDS ===== */
+  .tweet-thread-num {
+    font-size: 10px;
+    color: var(--text4);
+    margin-top: 8px;
+  }
+
+  /* === DOCUMENT CARDS (Hähle tab) === */
   .doc-card {
-    padding: 14px 20px; border-bottom: 1px solid var(--border);
-    cursor: pointer; transition: background 0.15s;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
   }
   .doc-card:hover { background: var(--bg3); }
   .doc-card.expanded { background: var(--bg3); }
-  .doc-title { font-weight: 500; font-size: 13px; color: var(--text); margin-bottom: 2px; }
-  .doc-meta { font-size: 10.5px; color: var(--text4); }
-  .doc-body { display: none; margin-top: 10px; }
+  .doc-title {
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .doc-meta {
+    font-size: 10.5px;
+    color: var(--text4);
+  }
+  .doc-body {
+    display: none;
+    margin-top: 10px;
+  }
   .doc-card.expanded .doc-body { display: block; }
-  .doc-note { font-size: 11px; line-height: 1.55; color: var(--text3); margin-bottom: 8px; }
+  .doc-note {
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
 
-  /* ===== LIGHTBOX ===== */
+  /* === LIGHTBOX === */
   .lightbox {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.96); z-index: 9999;
-    cursor: pointer; align-items: center;
-    justify-content: center; flex-direction: column;
-    opacity: 0; transition: opacity 0.3s ease;
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.94);
+    z-index: 9999;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
   }
   .lightbox.active { display: flex; }
-  .lightbox.show { opacity: 1; }
   .lightbox img {
-    max-width: 92vw; max-height: 82vh;
-    border: 1px solid var(--border);
-    box-shadow: 0 12px 60px rgba(0,0,0,0.8);
-    transition: transform 0.3s ease;
-    transform: scale(0.97);
+    max-width: 92vw;
+    max-height: 85vh;
+    border: 1px solid var(--border2);
+    border-radius: 3px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.7);
   }
-  .lightbox.show img { transform: scale(1); }
   .lightbox-cap {
-    color: var(--text3); font-size: 12px;
-    margin-top: 14px; max-width: 70vw;
-    text-align: center; line-height: 1.5;
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
+    color: var(--text3);
+    font-size: 12px;
+    margin-top: 10px;
+    max-width: 80vw;
+    text-align: center;
+    line-height: 1.5;
   }
   .lightbox-close {
-    position: fixed; top: 16px; right: 20px;
-    color: var(--text4); font-size: 28px;
-    cursor: pointer; z-index: 10000; line-height: 1;
-    transition: color 0.2s;
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    color: var(--text3);
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 10000;
+    line-height: 1;
   }
   .lightbox-close:hover { color: var(--text); }
   .lightbox-nav {
-    position: fixed; top: 50%; transform: translateY(-50%);
-    color: var(--text4); font-size: 36px;
-    cursor: pointer; z-index: 10000; padding: 20px;
-    user-select: none; transition: color 0.2s;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text3);
+    font-size: 36px;
+    cursor: pointer;
+    z-index: 10000;
+    padding: 20px;
+    user-select: none;
   }
   .lightbox-nav:hover { color: var(--text); }
   .lightbox-prev { left: 10px; }
   .lightbox-next { right: 10px; }
-  .lightbox-counter {
-    position: fixed; bottom: 20px; left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px; color: var(--text4);
-    letter-spacing: 0.1em; font-family: 'Inter', sans-serif;
-  }
 
-  /* ===== LEAFLET OVERRIDES ===== */
+  /* === LEAFLET OVERRIDES === */
   .leaflet-control-zoom a {
     background: var(--bg3) !important;
-    color: var(--text3) !important;
-    border-color: var(--border) !important;
+    color: var(--text2) !important;
+    border-color: var(--border2) !important;
   }
-  .leaflet-control-zoom a:hover { background: var(--bg4) !important; color: var(--text) !important; }
+  .leaflet-control-zoom a:hover { background: var(--border2) !important; }
   .leaflet-control-attribution {
-    background: rgba(12,11,10,0.9) !important;
-    color: var(--text4) !important; font-size: 9px !important;
+    background: rgba(17,17,16,0.85) !important;
+    color: var(--text4) !important;
+    font-size: 10px !important;
   }
   .leaflet-control-attribution a { color: var(--text3) !important; }
   .leaflet-control-layers {
     background: var(--bg3) !important;
-    border: 1px solid var(--border) !important;
+    border: 1px solid var(--border2) !important;
     border-radius: 4px !important;
     color: var(--text2) !important;
     font-size: 11px !important;
-    font-family: 'Inter', sans-serif !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
   }
-  .leaflet-control-layers-toggle { width: 28px !important; height: 28px !important; }
+  .leaflet-control-layers-toggle {
+    width: 30px !important;
+    height: 30px !important;
+  }
   .leaflet-control-layers label { color: var(--text2) !important; }
 
   .waypoint-marker { background: none; border: none; }
   .mk {
-    width: 24px; height: 24px; border-radius: 50%;
+    width: 26px; height: 26px;
+    border-radius: 50%;
     background: var(--accent2);
-    border: 2px solid rgba(237,230,216,0.8);
-    color: var(--text); font-family: 'Inter', sans-serif;
-    font-size: 10px; font-weight: 600;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.6);
-    cursor: pointer; transition: transform 0.15s;
+    border: 2px solid var(--text);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.55);
+    cursor: pointer;
+    transition: transform 0.15s;
   }
   .mk:hover { transform: scale(1.15); }
-  .mk.final { background: var(--accent3); width: 28px; height: 28px; font-size: 11px; }
-  .mk.active { box-shadow: 0 0 0 4px rgba(212,101,74,0.35), 0 2px 8px rgba(0,0,0,0.6); }
+  .mk.final { background: var(--accent3); width: 30px; height: 30px; font-size: 12px; }
+  .mk.active { box-shadow: 0 0 0 4px rgba(196,92,58,0.35), 0 2px 8px rgba(0,0,0,0.55); }
+
   .mem-dot {
-    width: 7px; height: 7px; background: var(--text4);
-    border: 1.5px solid var(--text3); border-radius: 50%;
+    width: 8px; height: 8px;
+    background: var(--text4);
+    border: 1.5px solid var(--text3);
+    border-radius: 50%;
     box-shadow: 0 1px 3px rgba(0,0,0,0.4);
   }
 
-  /* Photo thumbnail markers on map */
-  .cam-thumb {
-    width: 38px; height: 38px; border-radius: 50%;
-    background-size: cover; background-position: center;
-    border: 2px solid rgba(255,255,255,0.45);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  /* Camera position markers */
+  .cam-mk {
+    width: 22px; height: 22px;
+    border-radius: 3px;
+    background: #3a6a3a;
+    border: 1.5px solid #8fbc8f;
+    color: #e8f0e8;
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
     cursor: pointer;
-    transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    transition: transform 0.15s;
+    position: relative;
   }
-  .cam-thumb:hover {
-    transform: scale(1.35);
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(212,101,74,0.3), 0 4px 20px rgba(0,0,0,0.7);
-    z-index: 1000 !important;
+  .cam-mk:hover { transform: scale(1.15); }
+  .cam-mk::before {
+    content: '';
+    position: absolute;
+    top: -5px; left: 50%; transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #3a6a3a;
+    display: none;
   }
+  .cam-mk.approx { background: #4a5a3a; border-color: #7a9a6a; }
 
   /* Witness markers */
   .wit-mk {
-    width: 20px; height: 20px; border-radius: 50%;
-    background: #2a4a6a; border: 1.5px solid #6a9ac8;
-    color: #d0e0f0; font-family: 'Inter', sans-serif;
-    font-size: 8px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #2a4a6a;
+    border: 1.5px solid #6a9ac8;
+    color: #d0e0f0;
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-    cursor: pointer; transition: transform 0.15s;
+    cursor: pointer;
+    transition: transform 0.15s;
   }
   .wit-mk:hover { transform: scale(1.15); }
 
-  /* Leaflet popup dark theme */
+  /* Leaflet popup styling */
   .leaflet-popup-content-wrapper {
     background: var(--bg2) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 4px !important;
+    border: 1px solid var(--border2) !important;
+    border-radius: 6px !important;
     color: var(--text) !important;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.7) !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6) !important;
   }
-  .leaflet-popup-tip { background: var(--bg2) !important; border: 1px solid var(--border) !important; }
+  .leaflet-popup-tip { background: var(--bg2) !important; border: 1px solid var(--border2) !important; }
   .leaflet-popup-content {
     font-family: 'Inter', sans-serif !important;
-    font-size: 12px !important; line-height: 1.55 !important;
-    color: var(--text2) !important; max-width: 280px; margin: 10px 12px !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    color: var(--text2) !important;
+    max-width: 280px;
+    margin: 10px 12px !important;
   }
   .leaflet-popup-content strong { color: var(--text); }
   .leaflet-popup-content .popup-img {
-    width: 100%; max-height: 180px; object-fit: cover;
-    border-radius: 2px; margin: 6px 0;
-    border: 1px solid var(--border); cursor: pointer;
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 3px;
+    margin: 6px 0;
+    border: 1px solid var(--border2);
+    cursor: pointer;
   }
   .leaflet-popup-content .popup-conf {
-    font-size: 8px; text-transform: uppercase;
-    letter-spacing: 0.08em; padding: 2px 5px;
-    border-radius: 2px; display: inline-block; margin-bottom: 4px;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 1px 5px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 4px;
   }
   .popup-conf.dean { background: #2a4a2a; color: #8fbc8f; }
   .popup-conf.landmark { background: #4a4a2a; color: #bcbc8f; }
   .popup-conf.approx { background: #4a3a2a; color: #bc9a6f; }
 
+  /* legend */
   .map-legend {
-    background: rgba(12,11,10,0.92);
-    border: 1px solid var(--border); border-radius: 4px;
-    padding: 8px 12px; font-size: 10px;
-    color: var(--text3); line-height: 2;
+    background: rgba(17,17,16,0.92);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 10.5px;
+    color: var(--text3);
+    line-height: 2;
   }
   .map-legend b { color: var(--text2); font-weight: 500; }
-  .lg-line { display: inline-block; width: 18px; height: 2px; vertical-align: middle; margin-right: 5px; border-radius: 1px; }
+  .lg-line { display: inline-block; width: 20px; height: 3px; vertical-align: middle; margin-right: 5px; border-radius: 1px; }
   .lg-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; margin-right: 5px; }
 
+  /* distance badge */
   .dist-badge {
-    background: rgba(12,11,10,0.92);
-    border: 1px solid var(--border); border-radius: 4px;
-    padding: 5px 10px; font-size: 10px;
-    color: var(--text3); line-height: 1.4;
+    background: rgba(17,17,16,0.92);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 11px;
+    color: var(--text2);
+    line-height: 1.4;
     font-family: 'Inter', sans-serif;
   }
   .dist-badge b { color: var(--accent); font-weight: 600; }
 
+  /* panel footer */
   .panel-footer {
-    padding: 16px 20px; font-size: 10px;
-    color: var(--text4); line-height: 1.7;
-    font-family: 'Inter', sans-serif;
+    padding: 14px 18px;
+    font-size: 10px;
+    color: var(--text4);
+    line-height: 1.6;
   }
   .panel-footer a { color: var(--text3); }
-  .panel-footer strong { color: var(--text3); font-weight: 500; }
 
-  .panel::-webkit-scrollbar { width: 5px; }
+  /* scrollbar */
+  .panel::-webkit-scrollbar { width: 6px; }
   .panel::-webkit-scrollbar-track { background: var(--bg); }
-  .panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
 
   @media (max-width: 800px) {
     :root { --panel-w: 100vw; }
     .main { flex-direction: column; }
     .panel { width: 100%; height: 50vh; border-left: none; border-top: 1px solid var(--border); }
     #map { height: 50vh; }
-    .hero-title { font-size: 3rem; }
-    .hero-content { padding: 0 32px 48px; }
   }
 </style>
 </head>
 <body>
 
-<!-- ===== HERO SPLASH ===== -->
-<div class="hero" id="hero">
-  <div class="hero-images">
-    <img class="hero-img active" src="Research2/Haehle_Kiev_Babyn_Yar_September_1941_ENG/Kiew_Babyn_Yar_7_Bild_008-005.jpg" alt="">
-    <img class="hero-img" src="Research2/Haehle_Kiev_Babyn_Yar_September_1941_ENG/Kiew_Babyn_Yar_20_Bild_008_018.jpg" alt="">
-    <img class="hero-img" src="Research2/Haehle_Kiev_Babyn_Yar_September_1941_ENG/Kiew_Babyn_Yar_17_Bild_008-015.jpg" alt="">
-  </div>
-  <div class="hero-grad"></div>
-  <div class="hero-content">
-    <div class="hero-kicker">An Interactive Documentary</div>
-    <h1 class="hero-title">Babi Yar</h1>
-    <div class="hero-date">September 29&ndash;30, 1941 &middot; Kyiv, Ukraine</div>
-    <p class="hero-text">In two days, 33,771 Jewish men, women and children were marched to a ravine on the outskirts of Kyiv and murdered by German Sonderkommando 4a. This map reconstructs their final route using Wehrmacht colour photographs, Luftwaffe aerial reconnaissance, German operational reports, and eyewitness testimony.</p>
-    <button class="hero-btn" onclick="dismissHero()">Explore the map &rarr;</button>
-  </div>
-  <div class="hero-credit">Johannes H&auml;hle, Agfacolor slide #7 &mdash; Archives of the Hamburg Institute for Social Research</div>
-</div>
-
-<!-- ===== TOP BAR ===== -->
+<!-- TOP BAR -->
 <div class="topbar">
-  <h1>Babi Yar <span>September 29&ndash;30, 1941</span></h1>
+  <div class="topbar-left">
+    <h1>The March to Babi Yar</h1>
+    <div class="sub">Kyiv &middot; September 29, 1941 &middot; Route reconstruction with H&auml;hle photographs, Luftwaffe aerials &amp; primary documents</div>
+  </div>
   <div class="topbar-right">
     <button class="topbar-btn" onclick="map.flyTo([50.4670, 30.4660], 15, {duration:1})">Overview</button>
     <button class="topbar-btn" onclick="map.flyTo([50.4725, 30.4495], 17, {duration:1})">Ravine</button>
-    <button class="topbar-btn" onclick="togglePanel()">Panel</button>
+    <button class="topbar-btn" id="togglePanel" onclick="togglePanel()">Panel</button>
   </div>
 </div>
 
-<!-- ===== MAIN ===== -->
+<!-- MAIN -->
 <div class="main">
   <div id="map"></div>
+
+  <!-- SIDE PANEL -->
   <div class="panel" id="panel">
     <div class="tab-bar">
       <button class="tab-btn active" data-tab="route" onclick="switchTab('route')">Route</button>
       <button class="tab-btn" data-tab="photos" onclick="switchTab('photos')">H&auml;hle Photos</button>
-      <button class="tab-btn" data-tab="docs" onclick="switchTab('docs')">Evidence</button>
+      <button class="tab-btn" data-tab="docs" onclick="switchTab('docs')">Documents</button>
     </div>
 
+    <!-- TAB: ROUTE -->
     <div class="tab-content active" id="tab-route">
       <div class="panel-epigraph">
-        &ldquo;The older people who had difficulty walking were sighing in a barely audible way, but they silently continued their path of sorrow&hellip;&rdquo;
+        &ldquo;The older people who had difficulty walking were sighing
+        in a barely audible way, but they silently continued their path of sorrow&hellip;&rdquo;
         <div class="attr">&mdash; Dina Pronicheva, testimony, April 24, 1946</div>
       </div>
       <div id="wp-list"></div>
     </div>
 
+    <!-- TAB: HÄHLE PHOTOS -->
     <div class="tab-content" id="tab-photos">
       <div class="panel-section">
-        <div class="doc-title" style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700">Johannes H&auml;hle &mdash; Agfacolor Slides</div>
-        <div class="doc-meta">September/October 1941 &middot; 29 surviving slides &middot; Hamburg Institute for Social Research</div>
+        <div class="doc-title">Johannes H&auml;hle &mdash; Agfacolor Slides</div>
+        <div class="doc-meta">September/October 1941 &middot; 29 surviving slides &middot; Archives of the Hamburg Institute for Social Research</div>
         <div class="doc-note" style="margin-top:8px;">H&auml;hle, a Wehrmacht propaganda photographer, documented the streets of Kyiv, the march, and the aftermath at Babi Yar on Agfacolor reversal film. These are among the only known colour photographs of the events.</div>
       </div>
       <div id="photo-groups"></div>
     </div>
 
+    <!-- TAB: DOCUMENTS (Tweet Thread) -->
     <div class="tab-content" id="tab-docs">
       <div class="panel-epigraph">
         &ldquo;The shooting of the Jews is a fact. It is this fact from which we are all beginning to lose our minds.&rdquo;
@@ -581,49 +747,29 @@
       Aerial imagery: NARA, GX 3938, No. 104, Sept 26, 1943. Public domain via USHMM.<br>
       Route analysis: Dr. Martin Dean, &ldquo;The route taken by Johannes Haehle&rdquo; (BYHMC); <em>Investigating Babyn Yar</em> (Lexington, 2023).<br>
       Documents: Bundesarchiv R 58/218; NARA; Jewish Virtual Library / Arad et al., <em>The Einsatzgruppen Reports</em>.<br>
-      Testimonies: Pronicheva (1946, USHMM pa15588); Khoroshunova diary (USHMM RG-31.056; EHRI); Nartova; Powa (BA-L B162/6664); Trill (BA-L B162/17938).<br>
-      Press: La Stampa (Bellotti, Oct 31 1941); TASS/Pravda (Nov 19 1941).<br>
+      Testimonies: Pronicheva (1946, USHMM pa15588); Khoroshunova diary (USHMM RG-31.056; EHRI); Powa (BA-L B162/6664); Trill (BA-L B162/17938).<br>
       Map tiles: ESRI World Imagery; Carto; OpenStreetMap.
     </div>
   </div>
 </div>
 
-<!-- ===== LIGHTBOX ===== -->
+<!-- LIGHTBOX -->
 <div class="lightbox" id="lb" onclick="closeLb()">
   <div class="lightbox-close" onclick="closeLb()">&times;</div>
   <div class="lightbox-prev lightbox-nav" onclick="event.stopPropagation();lbNav(-1)">&#8249;</div>
   <div class="lightbox-next lightbox-nav" onclick="event.stopPropagation();lbNav(1)">&#8250;</div>
   <img id="lb-img" src="" alt="" onclick="event.stopPropagation()">
   <div class="lightbox-cap" id="lb-cap"></div>
-  <div class="lightbox-counter" id="lb-counter"></div>
 </div>
 
 <script>
-// ===== HERO =====
-let heroIdx = 0;
-const heroImgs = document.querySelectorAll('.hero-img');
-let heroTimer;
-if (heroImgs.length > 1) {
-  heroTimer = setInterval(() => {
-    heroImgs[heroIdx].classList.remove('active');
-    heroIdx = (heroIdx + 1) % heroImgs.length;
-    heroImgs[heroIdx].classList.add('active');
-  }, 4500);
-}
-function dismissHero() {
-  clearInterval(heroTimer);
-  document.getElementById('hero').classList.add('dismissed');
-  setTimeout(() => document.getElementById('hero').style.display = 'none', 1100);
-}
-
-// ===== PATHS =====
+// === PATHS ===
 const P = {
   haehle: 'Research2/Haehle_Kiev_Babyn_Yar_September_1941_ENG/',
   dean: 'Research2/Babi_Yar_Aerial_Photos/',
   docs: 'Research2/Ereignismeldungen_UdSSR/'
 };
-
-// ===== MAP =====
+// === MAP ===
 const sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
   attribution: '&copy; Esri, Maxar', maxZoom: 19
 });
@@ -635,72 +781,123 @@ const labels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/
 });
 
 const map = L.map('map', {
-  center: [50.4670, 30.4660], zoom: 15,
+  center: [50.4670, 30.4660],
+  zoom: 15,
   layers: [sat, labels],
-  zoomControl: true, maxZoom: 19, minZoom: 12
+  zoomControl: true,
+  maxZoom: 19,
+  minZoom: 12
 });
 
-// ===== AERIAL OVERLAYS =====
+// === AERIAL OVERLAY ===
 const aerialBounds = [[50.4660, 30.4370], [50.4800, 30.4640]];
-const aerialOverlay = L.imageOverlay(P.dean + 'USHMM_PA1144577_BabiYar_aerial_1943-09-26.jpg', aerialBounds, { opacity: 0.7, interactive: false });
+const aerialOverlay = L.imageOverlay(
+  P.dean + 'USHMM_PA1144577_BabiYar_aerial_1943-09-26.jpg',
+  aerialBounds,
+  { opacity: 0.7, interactive: false }
+);
 
+// === NE SECTION AERIAL OVERLAY (PA1097757 - higher resolution, NE portion) ===
 const aerialNEBounds = [[50.4700, 30.4440], [50.4790, 30.4600]];
-const aerialNEOverlay = L.imageOverlay(P.dean + 'USHMM_PA1097757_BabiYar_aerial_1943-09-26.jpg', aerialNEBounds, { opacity: 0.75, interactive: false });
+const aerialNEOverlay = L.imageOverlay(
+  P.dean + 'USHMM_PA1097757_BabiYar_aerial_1943-09-26.jpg',
+  aerialNEBounds,
+  { opacity: 0.75, interactive: false }
+);
 
+// === DEAN ANNOTATED AERIAL — ROUTE RECONSTRUCTION ===
 const deanRouteBounds = [[50.4695, 30.4430], [50.4770, 30.4560]];
-const deanRouteOverlay = L.imageOverlay(P.dean + 'martin-dean-09.jpg', deanRouteBounds, { opacity: 0.8, interactive: false });
+const deanRouteOverlay = L.imageOverlay(
+  P.dean + 'martin-dean-09.jpg',
+  deanRouteBounds,
+  { opacity: 0.8, interactive: false }
+);
 
+// === DEAN ANNOTATED AERIAL — CAMP INFRASTRUCTURE ===
 const deanCampBounds = [[50.4710, 30.4460], [50.4760, 30.4550]];
-const deanCampOverlay = L.imageOverlay(P.dean + 'martin-dean-02.jpg', deanCampBounds, { opacity: 0.8, interactive: false });
+const deanCampOverlay = L.imageOverlay(
+  P.dean + 'martin-dean-02.jpg',
+  deanCampBounds,
+  { opacity: 0.8, interactive: false }
+);
 
-// Enable full aerial by default
+// Enable full aerial overlay by default
 aerialOverlay.addTo(map);
 
-// ===== ROUTE =====
+// NOTE: L.control.layers added after cameraLayer & witnessLayer are defined (below memorials)
+
+// === ROUTE ===
 const route = [
-  [50.4598,30.4810],[50.4610,30.4790],[50.4625,30.4770],[50.4640,30.4745],
-  [50.4655,30.4715],[50.4665,30.4690],[50.4678,30.4660],[50.4690,30.4635],
-  [50.4698,30.4615],[50.4705,30.4580],[50.4708,30.4550],[50.4712,30.4520],
-  [50.4718,30.4505],[50.4725,30.4492],[50.4735,30.4485]
+  [50.4598, 30.4810],
+  [50.4610, 30.4790],
+  [50.4625, 30.4770],
+  [50.4640, 30.4745],
+  [50.4655, 30.4715],
+  [50.4665, 30.4690],
+  [50.4678, 30.4660],
+  [50.4690, 30.4635],
+  [50.4698, 30.4615],
+  [50.4705, 30.4580],
+  [50.4708, 30.4550],
+  [50.4712, 30.4520],
+  [50.4718, 30.4505],
+  [50.4725, 30.4492],
+  [50.4735, 30.4485]
 ];
 
-L.polyline(route, { color: '#d4654a', weight: 12, opacity: 0.1, lineCap: 'round', lineJoin: 'round' }).addTo(map);
-L.polyline(route, { color: '#d4654a', weight: 3.5, opacity: 0.8, dashArray: '8,6', lineCap: 'round', lineJoin: 'round' }).addTo(map);
+L.polyline(route, { color: '#c45c3a', weight: 14, opacity: 0.12, lineCap: 'round', lineJoin: 'round' }).addTo(map);
+L.polyline(route, { color: '#c45c3a', weight: 4.5, opacity: 0.85, dashArray: '10,7', lineCap: 'round', lineJoin: 'round' }).addTo(map);
 
+// Calculate total route distance
 function haversine(a, b) {
-  const R = 6371000, toRad = x => x * Math.PI / 180;
-  const dLat = toRad(b[0]-a[0]), dLon = toRad(b[1]-a[1]);
-  const lat1 = toRad(a[0]), lat2 = toRad(b[0]);
+  const R = 6371000;
+  const toRad = x => x * Math.PI / 180;
+  const dLat = toRad(b[0] - a[0]);
+  const dLon = toRad(b[1] - a[1]);
+  const lat1 = toRad(a[0]);
+  const lat2 = toRad(b[0]);
   const h = Math.sin(dLat/2)**2 + Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)**2;
   return 2 * R * Math.asin(Math.sqrt(h));
 }
 let totalDist = 0;
 const cumDist = [0];
-for (let i = 1; i < route.length; i++) { totalDist += haversine(route[i-1], route[i]); cumDist.push(totalDist); }
+for (let i = 1; i < route.length; i++) {
+  totalDist += haversine(route[i-1], route[i]);
+  cumDist.push(totalDist);
+}
 
 // arrows
 [[50.4635,30.4755,-40],[50.4678,30.4660,-35],[50.4710,30.4545,-20]].forEach(a => {
   L.marker([a[0],a[1]], {
     icon: L.divIcon({ className:'waypoint-marker',
-      html:`<div style="color:#d4654a;font-size:14px;transform:rotate(${a[2]}deg);text-shadow:0 1px 4px rgba(0,0,0,.7);opacity:0.7">&#9654;</div>`,
-      iconSize:[14,14], iconAnchor:[7,7] }),
+      html:`<div style="color:#c45c3a;font-size:16px;transform:rotate(${a[2]}deg);text-shadow:0 1px 4px rgba(0,0,0,.6)">&#9654;</div>`,
+      iconSize:[16,16], iconAnchor:[8,8] }),
     interactive: false
   }).addTo(map);
 });
 
+// distance label at midpoint of route
 const midIdx = Math.floor(route.length / 2);
 L.marker(route[midIdx], {
   icon: L.divIcon({
     className: 'waypoint-marker',
-    html: `<div style="background:rgba(12,11,10,0.9);border:1px solid var(--border);border-radius:3px;padding:2px 8px;font-family:Inter,sans-serif;font-size:10px;color:#b8ad9a;white-space:nowrap;text-align:center;line-height:1.4"><span style="color:#d4654a;font-weight:600">${(totalDist/1000).toFixed(1)} km</span> march</div>`,
-    iconSize: [90, 18], iconAnchor: [45, -8]
-  }), interactive: false
+    html: `<div style="background:rgba(17,17,16,0.88);border:1px solid #3a3529;border-radius:3px;padding:2px 7px;font-family:Inter,sans-serif;font-size:10px;color:#b0a494;white-space:nowrap;text-align:center;line-height:1.4">
+      <span style="color:#c45c3a;font-weight:600">${(totalDist/1000).toFixed(1)} km</span> march route
+    </div>`,
+    iconSize: [100, 20],
+    iconAnchor: [50, -8]
+  }),
+  interactive: false
 }).addTo(map);
 
-// ===== WAYPOINTS =====
+// === WAYPOINTS ===
+// Helper: find cumulative distance to nearest route point for a given waypoint position
 function distToWp(wpPos) {
   let minD = Infinity, bestIdx = 0;
-  route.forEach((pt, i) => { const d = haversine(wpPos, pt); if (d < minD) { minD = d; bestIdx = i; } });
+  route.forEach((pt, i) => {
+    const d = haversine(wpPos, pt);
+    if (d < minD) { minD = d; bestIdx = i; }
+  });
   return cumDist[bestIdx];
 }
 
@@ -723,7 +920,7 @@ const W = [
     title:'Along Melnikova Street',
     loc:'Lukyanivka neighbourhood, heading NW',
     time:'Morning \u2014 slow procession',
-    desc:'The immense column moved northwest through Lukyanivka. The pace was agonizingly slow \u2014 elderly on carts, mothers with infants, the sick and disabled.',
+    desc:'The immense column moved northwest through Lukyanivka. The pace was agonizingly slow \u2014 elderly on carts, mothers with infants, the sick and disabled. Bodies from the preceding days of occupation lay on the kerbs.',
     testimony:'\u201CAhead of me a woman with two children in her arms walked along, while the third child clung to her apron-strings. The sick women and elderly were taken by carts, on which bags and suitcases were piled up.\u201D',
     tsrc:'Dina Pronicheva, April 24, 1946',
     photos:[
@@ -789,7 +986,7 @@ const W = [
   }
 ];
 
-// ===== HÄHLE PHOTO GROUPS =====
+// === HÄHLE PHOTO GROUPS ===
 const photoGroups = [
   {
     title: 'The March Through Kyiv',
@@ -804,7 +1001,7 @@ const photoGroups = [
   {
     title: 'The Sand Quarry & Undressing Area',
     subtitle: 'Slides 6\u20139 (Bild 008-004 to 007)',
-    note: 'The sand quarry where victims surrendered possessions and clothing. These images are among the most direct physical evidence of the massacre.',
+    note: 'The sand quarry where victims surrendered possessions and clothing.',
     photos: [
       [P.haehle+'Kiew_babyn_Yar_6_Bild_008-004.jpg','#6: Clothing piles'],
       [P.haehle+'Kiew_Babyn_Yar_7_Bild_008-005.jpg','#7: Clothing pile, cliff wall'],
@@ -815,7 +1012,7 @@ const photoGroups = [
   {
     title: 'Personal Effects',
     subtitle: 'Slides 10\u201315 (Bild 008-008 to 013)',
-    note: 'Close-ups of personal belongings \u2014 shoes, photographs, hand-knitted items. Each object belonged to a person who was alive hours earlier.',
+    note: 'Close-ups of personal belongings \u2014 shoes, photographs, hand-knitted items.',
     photos: [
       [P.haehle+'Kiew_Babyn_Yar_10_Bild_008-008.jpg','#10'],
       [P.haehle+'Kiew_Babyn_Yar_11_Bild_008_009.jpg','#11'],
@@ -828,7 +1025,7 @@ const photoGroups = [
   {
     title: 'The Western Spur & Ravine',
     subtitle: 'Slides 16\u201318 (Bild 008-014 to 016)',
-    note: '#17 is the most iconic image: the western spur with the lone tree on the crescent cliff \u2014 the main shooting site.',
+    note: '#17 is the most iconic image: the western spur with the lone tree on the crescent cliff.',
     photos: [
       [P.haehle+'Kiew_Babyn_Yar_16_Bild_008-014.jpg','#16: Waffen-SS guarding POWs'],
       [P.haehle+'Kiew_Babyn_Yar_17_Bild_008-015.jpg','#17: THE iconic image'],
@@ -864,7 +1061,7 @@ const photoGroups = [
   }
 ];
 
-// ===== EVIDENCE THREAD =====
+// === TWEET THREAD ===
 const TWEETS = [
   {
     name:'German Occupation Authorities',
@@ -878,25 +1075,14 @@ const TWEETS = [
     imgs:[[P.docs+'Bekanntmachung_Kiev_28Sep1941_Wikimedia.jpg','Bekanntmachung poster \u2014 Ukrainian State Archives via Wikimedia']]
   },
   {
-    name:'L. Nartova',
-    handle:'Kyiv schoolteacher',
-    date:'September 29, 1941',
-    label:'witness', labelText:'EYEWITNESS DIARY',
-    body:'<strong>Diary entry written the day of the massacre</strong><br><br>Nartova, a Kiev schoolteacher, watched the procession from the street. Her diary was recovered by the Soviet Extraordinary Commission.',
-    german:'',
-    quote:'\u201CI watched a crowd of Jews being herded along the street, guarded by policemen. They were of different ages but mostly elderly, walking slowly with pitiful faces. <em>Three women were carried behind them on wheelbarrows, their legs hanging out and striking the pavement.</em>\u201D',
-    note:'Source: Yad Vashem educational materials; Karel Berkhoff, <em>Babi Yar: Ravine of Oblivion</em>, USHMM Occasional Paper (2011).',
-    imgs:[]
-  },
-  {
     name:'Kor\u00fcck 585',
     handle:'Rear Area Command, 6th Army / Wehrmacht',
     date:'August 30 \u2013 September 28, 1941',
     label:'military', labelText:'MILITARY',
     body:'<strong>Wehrmacht Rear-Area Documents (RH 23/330)</strong><br><br>Kor\u00fcck 585 was a <em>regular army</em> command, not SS. Its surviving files show how the Wehrmacht provided the organizational framework within which the massacre was carried out.',
     german:'',
-    quote:'The August 30, 1941 order establishes \u201CSammelkommandos (Juden, Kriegsgefangene, notfalls auch Ukrainer)\u201D \u2014 forced-labour details of Jews, POWs, and if necessary Ukrainians \u2014 to collect textiles from buildings across the city.',
-    note:'EM 106 states the massacre was carried out \u201Cin agreement with the city commandant\u201D \u2014 these files are the paper trail from the army side of that collaboration. Page 32 reveals 107,000 POWs held in army collection points.',
+    quote:'The August 30, 1941 order establishes \u201CSammelkommandos (Juden, Kriegsgefangene, notfalls auch Ukrainer)\u201D \u2014 forced-labour details of Jews, POWs, and if necessary Ukrainians \u2014 to collect textiles from buildings across the city. One month before Babi Yar, the army was already categorizing Jewish civilians as a disposable labor pool.',
+    note:'EM 106 states the massacre was carried out \u201Cin agreement with the city commandant\u201D \u2014 these files are the paper trail from the army side of that collaboration. Page 32 reveals 107,000 POWs held in army collection points. Page 34 discusses the Stadtkommandant\u2019s role in Kyiv.',
     imgs:[
       [P.docs+'Koruck585_RH23_330_p7_CoverPage.jpg','Cover page \u2014 T\u00e4tigkeitsbericht, Kor\u00fcck 585, GEHEIM'],
       [P.docs+'Koruck585_RH23_330_p47_Juden_Sammelkommando_30Aug1941.jpg','p. 47: Sammelkommando order, Aug 30 \u2014 \u201CJuden, Kriegsgefangene\u201D'],
@@ -923,10 +1109,10 @@ const TWEETS = [
     handle:'Einsatzgruppe C / RSHA, Berlin',
     date:'October 7, 1941',
     label:'report', labelText:'REPORT',
-    body:'<strong>Ereignismeldung UdSSR Nr. 106</strong><br><br>The <em>detailed account</em> \u2014 15 pages on Kiev alone. Describes the arson pretext, the resettlement ruse, the role of the Ukrainian militia, the execution, and the disposal of property. Used at the Nuremberg Einsatzgruppen Trial (Case No. 9).',
+    body:'<strong>Ereignismeldung UdSSR Nr. 106</strong><br><br>The <em>detailed account</em> \u2014 15 pages on Kiev alone. Describes the arson pretext, the resettlement ruse, the role of the Ukrainian militia, the execution, and the disposal of property. Used at the Nuremberg Einsatzgruppen Trial (Case No. 9). Copy 40 of 48.',
     german:'Im Zusammenarbeit mit dem Gruppenstab und 2 Kommandos des Polizei-Regiments S\u00fcd hat das Sonderkommando 4a am 29. und 30.9. <em>33.771 Juden exekutiert.</em> Geld, Wertsachen, W\u00e4sche und Kleidungsst\u00fccke wurden sichergestellt\u2026 Die Aktion selbst hat <em>reibungslos verlaufen.</em>',
     quote:'Sonderkommando 4a on September 29 and 30 <em>executed 33,771 Jews.</em> Money, valuables, linen, and clothing were confiscated\u2026 The action itself <em>proceeded smoothly.</em> There were no disruptions of any kind.',
-    note:'Bundesarchiv R 58/218, fol. 52\u201377. \u201CReibungslos verlaufen\u201D \u2014 \u201Cproceeded smoothly\u201D \u2014 is the bureaucratic language of industrialized murder.',
+    note:'Bundesarchiv R 58/218, fol. 52\u201377. \u201CReibungslos verlaufen\u201D \u2014 \u201Cproceeded smoothly\u201D \u2014 is the bureaucratic language of industrialized murder. The report also details the distribution of stolen property: valuables to the BdS for \u201Cequipping ethnic Germans,\u201D clothing to the city administration.',
     imgs:[
       [P.docs+'EM106_cover_7Okt1941.jpg','EM 106 cover \u2014 7. Oktober 1941'],
       [P.docs+'EM106_p13_Kiew_Babi_Yar.jpg','p. 13: Kiev / Babi Yar section'],
@@ -942,7 +1128,7 @@ const TWEETS = [
     body:'<strong>Ereignismeldung UdSSR Nr. 128</strong><br><br>The cumulative summary, filed five weeks after the massacre. 50 copies. Reveals the deception strategy and the scale that exceeded expectations.',
     german:'',
     quote:'Although initially only the participation of 5,000 to 6,000 Jews had been expected, <em>more than 30,000 Jews arrived,</em> who, thanks to extremely clever organization, still believed in their resettlement <em>until the very moment of execution.</em>',
-    note:'Also reports ~80,000 total killed by Einsatzgruppe C by early November; ~75,000 Jews \u201Cliquidated in this manner.\u201D English translation: Arad, Krakowski & Spector, <em>The Einsatzgruppen Reports</em>, pp. 217\u2013220.',
+    note:'Also reports ~80,000 total killed by Einsatzgruppe C by early November; ~75,000 Jews \u201Cliquidated in this manner.\u201D Distinguishes between those \u201Cconvicted after investigation\u201D (~8,000) and the vast majority killed \u201Cin retaliatory actions\u201D \u2014 a euphemism for mass execution. English translation: Arad, Krakowski & Spector, <em>The Einsatzgruppen Reports</em>, pp. 217\u2013220. No scans in this collection \u2014 text from Arolsen Archives.',
     imgs:[]
   },
   {
@@ -961,10 +1147,10 @@ const TWEETS = [
     handle:'Kyiv resident, engineer/draftsperson',
     date:'September 30 & October 2, 1941',
     label:'witness', labelText:'EYEWITNESS DIARY',
-    body:'<strong>Diary entries written in occupied Kyiv</strong><br><br>Khoroshunova, an ethnic Ukrainian, recorded events in real time. Her diary captures the transition from rumour to certainty. USHMM RG-31.056.0001.',
+    body:'<strong>Diary entries written in occupied Kyiv</strong><br><br>Khoroshunova, an ethnic Ukrainian, recorded events in real time. Her diary captures the transition from rumour to certainty. USHMM RG-31.056.0001; published in <em>Die Scho\u00e1h von Babij Jar</em> (1991). Multiple manuscript versions survive.',
     german:'',
-    quote:'<strong>September 30:</strong> \u201CWe still do not know what has become of the Jews. Terrible. [Gunfire] can be heard from the direction of Lukyanivske cemetery\u2026 They say the Jews have been shot.\u201D<br><br><strong>October 2:</strong> \u201CNow everyone is saying that the Jews are being killed. No \u2014 not being killed \u2014 <em>they are already dead.</em> All of them, without distinction: old people, women, children\u2026 One Russian woman accompanied her [Jewish] girlfriend to the cemetery, then squeezed through a fence. <em>She saw how naked people were being led in the direction of Babi Yar, and heard the shooting.</em>\u201D<br><br>\u201CThe shooting of the Jews is a fact. It is this fact from which we are all beginning to lose our minds. <em>Is it even possible to weep?</em>\u201D',
-    note:'Diary manuscript scan courtesy of EHRI Online Course in Holocaust Studies.',
+    quote:'<strong>September 30:</strong> \u201CWe still do not know what has become of the Jews. Terrible. [Gunfire] can be heard from the direction of Lukyanivske cemetery\u2026 They say the Jews have been shot. The entire road was packed with Jews, surrounded by German soldiers.\u201D<br><br><strong>October 2:</strong> \u201CNow everyone is saying that the Jews are being killed. No \u2014 not being killed \u2014 <em>they are already dead.</em> All of them, without distinction: old people, women, children\u2026 One Russian woman accompanied her [Jewish] girlfriend to the cemetery, then squeezed through a fence. <em>She saw how naked people were being led in the direction of Babi Yar, and heard the shooting.</em>\u201D<br><br>\u201CThe shooting of the Jews is a fact. It is this fact from which we are all beginning to lose our minds. It is impossible to live with the awareness of this fact. We also wept on September 29th, when we thought they were being taken to a concentration camp. And now? <em>Is it even possible to weep?</em>\u201D',
+    note:'Diary manuscript scan courtesy of EHRI Online Course in Holocaust Studies, European Holocaust Research Infrastructure (training.ehri-project.eu).',
     imgs:[
       [P.docs+'Khoroshunova_Diary_manuscript_scan_EHRI_RG31056.jpg','Manuscript page 88\u201389: entries for Sept 28\u201330, 1941 \u2014 EHRI / USHMM RG-31.056']
     ]
@@ -974,45 +1160,23 @@ const TWEETS = [
     handle:'Babi Yar survivor, actress, Kiev Puppet Theatre',
     date:'January 24, 1946',
     label:'witness', labelText:'SURVIVOR TESTIMONY',
-    body:'<strong>Testimony at the Kiev war crimes trial</strong><br><br>Pronicheva is the only known survivor of Babi Yar to have testified at a war crimes trial. Her parents and sister were killed. She survived by jumping into the pit and remaining motionless among the dead, escaping under cover of darkness.',
+    body:'<strong>Testimony at the Kiev war crimes trial</strong><br><br>Pronicheva is the only known survivor of Babi Yar to have testified at a war crimes trial. Her parents and sister were killed. She survived by jumping into the pit and remaining motionless among the dead, escaping under cover of darkness.<br><br>At this trial (Jan 17\u201328, 1946), 15 German and Austrian members of the Schutzpolizei and gendarmerie were tried. 12 were executed.',
     german:'',
     quote:'\u201CThe Jews by the thousands were on the way\u2026 Every few minutes a group of men, women and children were ordered to disrobe and to stand on the edge of a long ravine and\u2026 then they were killed by machine guns.\u201D<br><br>\u201CA young naked woman feeding a naked baby with her breast, when a Ukrainian policeman grabbed the infant and threw it into the ravine.\u201D',
-    note:'Testimony recorded on film for a Soviet Ukrainian newsreel. Photograph: USHMM / Babi Yar Society (pa15588, public domain).',
+    note:'Testimony recorded on film for a Soviet Ukrainian newsreel. Photograph courtesy of USHMM / Babi Yar Society (pa15588, public domain). Archive: TsDAHO fond 166, opys 3, sprava 245.',
     imgs:[
       [P.docs+'Pronicheva_testimony_Kiev_trial_Jan1946_USHMM_pa15588.jpg','Dina Pronicheva testifying at the Kiev war crimes trial, January 24, 1946 \u2014 USHMM / Babi Yar Society']
     ]
-  },
-  {
-    name:'La Stampa',
-    handle:'Felice Bellotti, Italian war correspondent',
-    date:'October 31, 1941',
-    label:'press', labelText:'AXIS PRESS',
-    body:'<strong>\u201CLe mine \u2018assassine\u2019 di Kiev\u201D</strong> (The \u2018Assassin\u2019 Mines of Kiev)<br><br>In October 1941, German authorities organized a propaganda press junket, transporting <strong>thirty foreign correspondents from ten countries</strong> by bus from Berlin to Kyiv. Bellotti was La Stampa\u2019s delegate. During the tour, a German city official made a remarkable admission:',
-    german:'',
-    quote:'\u201CThere used to be 350,000 Jews in the city; but today, there were no more Jews.\u201D<br><br>Bellotti reported this and explicitly asked in print <em>where the Jews had gone</em> \u2014 \u201Cdove sono gli ebrei?\u201D',
-    note:'An Italian Fascist reporter, writing in an Axis newspaper, asked the question no one in power wanted answered. The Chicago Daily Tribune correspondent Alex Small filed on the same junket and said nothing about the Jews\u2019 absence. Bellotti noticed, and said something.<br><br>Archivio Storico La Stampa, p. 3; digitized by EHRI as Document B05. Cited in: Berkhoff, \u201CBabi Yar: Site of Mass Murder, Ravine of Oblivion,\u201D USHMM Occasional Paper 2011-02, pp. 22\u201323.',
-    imgs:[]
-  },
-  {
-    name:'TASS / Pravda / Izvestiia',
-    handle:'Soviet State News Agency',
-    date:'November 19, 1941',
-    label:'press', labelText:'SOVIET PRESS',
-    body:'<strong>First Soviet public acknowledgment of the massacre</strong><br><br>Nearly two months after Babi Yar, Soviet state media published the first public statement acknowledging the mass killing.',
-    german:'',
-    quote:'\u201CThe Germans executed in Kiev <em>52,000 Jews</em> \u2014 men, women, and children.\u201D',
-    note:'The figure of 52,000 was higher than the actual Babi Yar count of 33,771 \u2014 it may have included subsequent killings or earlier actions in the Kiev area. Crucially, this Soviet acknowledgment came <em>before</em> the Wannsee Conference (Jan 20, 1942) and before any Western Allied government had made a similar public statement. Source: Berkhoff, USHMM Occasional Paper 2011-02.',
-    imgs:[]
   },
   {
     name:'Luftwaffe Reconnaissance',
     handle:'NARA RG 373 / USHMM',
     date:'September 26, 1943',
     label:'aerial', labelText:'AERIAL RECONNAISSANCE',
-    body:'<strong>Aerial photographs (GX 3938)</strong><br><br>Taken two years after the massacre, during the German retreat and the Sonderaktion 1005 cover-up operation. By this date, Syrets camp prisoners were being forced to exhume and burn bodies to destroy evidence.<br><br>Dr. Martin Dean used these images to reconstruct the precise locations of the massacre, sand quarry, camp infrastructure, and victim routes. <em>The 1943 Luftwaffe aerial is overlaid on the map by default \u2014 toggle it in the layer control.</em>',
+    body:'<strong>Aerial photographs (GX 3938)</strong><br><br>Taken two years after the massacre, during the German retreat and the Sonderaktion 1005 cover-up operation. By this date, Syrets camp prisoners were being forced to exhume and burn bodies to destroy evidence.<br><br>Dr. Martin Dean used these images to reconstruct the precise locations of the massacre, sand quarry, camp infrastructure, and victim routes. <em>Toggle the \u201C1943 Luftwaffe Aerial\u201D layer on the map to overlay one of these on the satellite view.</em>',
     german:'',
     quote:'',
-    note:'8 photographs from USHMM. Pre-war aerials from May 17, 1939 (NARA) also exist, showing the ravine before the massacre. Dean\u2019s annotated versions identify the western spur, sand quarry, guard tower shadows, and bunker positions.',
+    note:'8 photographs from USHMM. Dean\u2019s annotated versions identify the western spur, sand quarry, guard tower shadows, and bunker positions.',
     imgs:[
       [P.dean+'USHMM_PA1097751_BabiYar_aerial_1943-09-26.jpg','PA1097751: Full ravine view'],
       [P.dean+'USHMM_PA1097757_BabiYar_aerial_1943-09-26.jpg','PA1097757: NE section, highest resolution'],
@@ -1022,15 +1186,15 @@ const TWEETS = [
   }
 ];
 
-// ===== MARKERS =====
+// === MARKERS ===
 const markers = [];
 W.forEach(wp => {
   const cls = wp.final ? 'mk final' : 'mk';
   const icon = L.divIcon({
     className: 'waypoint-marker',
     html: `<div class="${cls}" id="mk-${wp.n}">${wp.n}</div>`,
-    iconSize: wp.final ? [28,28] : [24,24],
-    iconAnchor: wp.final ? [14,14] : [12,12]
+    iconSize: wp.final ? [30,30] : [26,26],
+    iconAnchor: wp.final ? [15,15] : [13,13]
   });
   const m = L.marker(wp.pos, { icon }).addTo(map);
   m.on('click', () => activateWp(wp.n));
@@ -1044,41 +1208,120 @@ W.forEach(wp => {
   [[50.4745,30.4502],'Memorial to the Children']
 ].forEach(([pos,name]) => {
   L.marker(pos, {
-    icon: L.divIcon({ className:'waypoint-marker', html:'<div class="mem-dot"></div>', iconSize:[7,7], iconAnchor:[3.5,3.5] })
-  }).addTo(map).bindTooltip(name, { direction:'top', offset:[0,-5] });
+    icon: L.divIcon({ className:'waypoint-marker', html:'<div class="mem-dot"></div>', iconSize:[8,8], iconAnchor:[4,4] })
+  }).addTo(map).bindTooltip(name, { direction:'top', offset:[0,-6] });
 });
 
-// ===== CAMERA POSITIONS (photo thumbnails on map) =====
+// === HÄHLE CAMERA POSITIONS (Dean-verified from BYHMC route analysis, p.10 annotated aerial) ===
+// Confidence levels: 'dean' = positioned by Dean using aerial/3D analysis; 'landmark' = identifiable via landmarks; 'approx' = approximate
 const cameraPositions = [
-  { id:'008-001', slide:'#3', pos:[50.4630,30.4755], conf:'landmark', title:'H\u00e4hle #3 (Bild 008-001)', desc:'Column marches past body on kerb. Melnikova St., Lukyanivka.', rationale:'Placed on Melnikova St. based on visible street architecture and march direction.', img:P.haehle+'Kiew_Babyn_Yar_3_Bild_008-001.jpg' },
-  { id:'008-002', slide:'#4', pos:[50.4640,30.4740], conf:'landmark', title:'H\u00e4hle #4 (Bild 008-002)', desc:'Crowd moving NW with belongings. Approaching cemeteries.', rationale:'Along Melnikova St. based on march direction and proximity to cemetery district.', img:P.haehle+'Kiew_Babyn_Yar_4_Bild_008-002.jpg' },
-  { id:'008-003', slide:'#5', pos:[50.4650,30.4725], conf:'landmark', title:'H\u00e4hle #5 (Bild 008-003)', desc:'Street scene \u2014 vehicles, carts. Continuation of march.', rationale:'On Melnikova St. near the cemetery district.', img:P.haehle+'Kiew_Babyn_Yar_5_Bild_008-003.jpg' },
-  { id:'008-004', slide:'#6', pos:[50.4715,30.4518], conf:'dean', title:'H\u00e4hle #6 (Bild 008-004)', desc:'Sand quarry \u2014 massive clothing piles. Near southern entrance.', rationale:'Dean (BYHMC, p.2): \u201Cclose to southern entrance to sand quarry, camera slightly west of due North.\u201D Position #4 on annotated aerial.', img:P.haehle+'Kiew_babyn_Yar_6_Bild_008-004.jpg' },
-  { id:'008-005', slide:'#7', pos:[50.4718,30.4513], conf:'dean', title:'H\u00e4hle #7 (Bild 008-005)', desc:'Massive clothing pile, cliff wall. Waffen-SS rummaging for valuables.', rationale:'Dean (BYHMC, pp.4\u20135): Further into quarry toward cliffs. Position #5 on annotated aerial.', img:P.haehle+'Kiew_Babyn_Yar_7_Bild_008-005.jpg' },
-  { id:'008-006', slide:'#8', pos:[50.4720,30.4508], conf:'dean', title:'H\u00e4hle #8 (Bild 008-006)', desc:'Three officers atop the cliff, western perimeter of sand quarry.', rationale:'Dean (BYHMC, p.6): Along western perimeter near cut entrance. Position #6 on annotated aerial.', img:P.haehle+'Kiew_Babyn_Yar_8_Bild_008-006.jpg' },
-  { id:'008-014', slide:'#16', pos:[50.4728,30.4495], conf:'dean', title:'H\u00e4hle #16 (Bild 008-014)', desc:'Waffen-SS guarding POW work detail in western spur.', rationale:'Dean (BYHMC, pp.8\u20139): \u201Cascends to plateau overlooking western spur.\u201D Position #14 on annotated aerial.', img:P.haehle+'Kiew_Babyn_Yar_16_Bild_008-014.jpg' },
-  { id:'008-015', slide:'#17', pos:[50.4733,30.4487], conf:'dean', title:'H\u00e4hle #17 (Bild 008-015) \u2014 THE ICONIC IMAGE', desc:'Looking straight down the western spur. Crescent cliff, lone tree. Main shooting site.', rationale:'Dean (BYHMC, pp.10\u201311): Head of western spur. Position #15. \u201CLone tree\u201D identified on both photo and 1943 aerial.', img:P.haehle+'Kiew_Babyn_Yar_17_Bild_008-015.jpg' },
-  { id:'008-016', slide:'#18', pos:[50.4734,30.4485], conf:'dean', title:'H\u00e4hle #18 (Bild 008-016)', desc:'Last Babi Yar photo. Discolorations from burial explosions.', rationale:'Dean (BYHMC, p.12): Near position #15. Position #16 on annotated aerial.', img:P.haehle+'Kiew_Babyn_Yar_18_Bild_008_016.jpg' },
-  { id:'008-017', slide:'#19', pos:[50.4600,30.4808], conf:'landmark', title:'H\u00e4hle #19 (Bild 008-017)', desc:'Wide view \u2014 massive crowd at assembly point.', rationale:'Assembly point based on crowd density and Bekanntmachung instructions.', img:P.haehle+'Kiew_Babyn_Yar_19_Bild_008_017.jpg' },
-  { id:'008-018', slide:'#20', pos:[50.4598,30.4812], conf:'landmark', title:'H\u00e4hle #20 (Bild 008-018)', desc:'Individual faces \u2014 women, children, elderly. Armed escort.', rationale:'Same assembly area as #19. Faces of victims visible.', img:P.haehle+'Kiew_Babyn_Yar_20_Bild_008_018.jpg' }
+  {
+    id: '008-001', slide: '#3', pos: [50.4630, 30.4755],
+    conf: 'landmark',
+    title: 'Hähle #3 (Bild 008-001)',
+    desc: 'Column marches past body on kerb. Street scene on Melnikova St., Lukyanivka.',
+    rationale: 'Placed on Melnikova St. based on visible street architecture and march route direction (NW toward cemeteries).',
+    img: P.haehle + 'Kiew_Babyn_Yar_3_Bild_008-001.jpg'
+  },
+  {
+    id: '008-002', slide: '#4', pos: [50.4640, 30.4740],
+    conf: 'landmark',
+    title: 'Hähle #4 (Bild 008-002)',
+    desc: 'Crowd moving NW with belongings. Further along Melnikova, approaching cemeteries.',
+    rationale: 'Placed along Melnikova St. based on march direction and proximity to cemetery district.',
+    img: P.haehle + 'Kiew_Babyn_Yar_4_Bild_008-002.jpg'
+  },
+  {
+    id: '008-003', slide: '#5', pos: [50.4650, 30.4725],
+    conf: 'landmark',
+    title: 'Hähle #5 (Bild 008-003)',
+    desc: 'Street scene — vehicles, carts. Continuation of march along Melnikova.',
+    rationale: 'Placed on Melnikova St. near the cemetery district based on visible surroundings.',
+    img: P.haehle + 'Kiew_Babyn_Yar_5_Bild_008-003.jpg'
+  },
+  {
+    id: '008-004', slide: '#6', pos: [50.4715, 30.4518],
+    conf: 'dean',
+    title: 'Hähle #6 (Bild 008-004)',
+    desc: 'Sand quarry — massive clothing piles curve left, indicating undressing path. Hähle near southern entrance to sand quarry.',
+    rationale: 'Dean (BYHMC, p.2): "close to the southern entrance to the sand quarry, pointing camera slightly west of due North." Position #4 on annotated aerial (p.10). Line of sight plotted on 1943 Luftwaffe aerial.',
+    img: P.haehle + 'Kiew_babyn_Yar_6_Bild_008-004.jpg'
+  },
+  {
+    id: '008-005', slide: '#7', pos: [50.4718, 30.4513],
+    conf: 'dean',
+    title: 'Hähle #7 (Bild 008-005)',
+    desc: 'Massive clothing pile, cliff wall visible. Waffen-SS rummaging for valuables in enlargement.',
+    rationale: 'Dean (BYHMC, pp.4–5): Advances further into quarry toward the cliffs. Position #5 on annotated aerial (p.10). Enlargement reveals Waffen-SS personnel.',
+    img: P.haehle + 'Kiew_Babyn_Yar_7_Bild_008-005.jpg'
+  },
+  {
+    id: '008-006', slide: '#8', pos: [50.4720, 30.4508],
+    conf: 'dean',
+    title: 'Hähle #8 (Bild 008-006)',
+    desc: 'Three officers atop the cliff, along western perimeter of sand quarry near the cut entrance.',
+    rationale: 'Dean (BYHMC, p.6): Along western perimeter near cut entrance. Position #6 on annotated aerial (p.10). Fritz Forberg (Police Bn 45) testimony corroborates.',
+    img: P.haehle + 'Kiew_Babyn_Yar_8_Bild_008-006.jpg'
+  },
+  {
+    id: '008-014', slide: '#16', pos: [50.4728, 30.4495],
+    conf: 'dean',
+    title: 'Hähle #16 (Bild 008-014)',
+    desc: 'Waffen-SS soldier guarding POW work detail in western spur. Hähle has ascended the plateau overlooking the ravine.',
+    rationale: 'Dean (BYHMC, pp.8–9): "ascends to plateau overlooking western spur — photo taken from roughly half-way along ravine." Position #14 on annotated aerial (p.10). POW N.B. Sokolov testimony.',
+    img: P.haehle + 'Kiew_Babyn_Yar_16_Bild_008-014.jpg'
+  },
+  {
+    id: '008-015', slide: '#17', pos: [50.4733, 30.4487],
+    conf: 'dean',
+    title: 'Hähle #17 (Bild 008-015) — THE ICONIC IMAGE',
+    desc: 'Looking straight down the western spur. Crescent-shaped cliff with lone tree on its edge. The main shooting site.',
+    rationale: 'Dean (BYHMC, pp.10–11): At the head of the western spur. Position #15 on annotated aerial. "Lone tree" atop crescent cliff identified on both ground photo and 1943 aerial. Viktor Trill testimony (Sept 30, second day).',
+    img: P.haehle + 'Kiew_Babyn_Yar_17_Bild_008-015.jpg'
+  },
+  {
+    id: '008-016', slide: '#18', pos: [50.4734, 30.4485],
+    conf: 'dean',
+    title: 'Hähle #18 (Bild 008-016)',
+    desc: 'Last photo in the Babi Yar series. Discolorations in sand from explosions used to bury corpses.',
+    rationale: 'Dean (BYHMC, p.12): Near position #15, very close to #17. Position #16 on annotated aerial (p.10). Final image before Hähle left the ravine area.',
+    img: P.haehle + 'Kiew_Babyn_Yar_18_Bild_008_016.jpg'
+  },
+  {
+    id: '008-017', slide: '#19', pos: [50.4600, 30.4808],
+    conf: 'landmark',
+    title: 'Hähle #19 (Bild 008-017)',
+    desc: 'Wide view — massive crowd at assembly point near Melnikova/Dehtiarivska intersection.',
+    rationale: 'Placed at assembly point based on crowd density and the Bekanntmachung instructions. Near Viiskove (Military) Cemetery.',
+    img: P.haehle + 'Kiew_Babyn_Yar_19_Bild_008_017.jpg'
+  },
+  {
+    id: '008-018', slide: '#20', pos: [50.4598, 30.4812],
+    conf: 'landmark',
+    title: 'Hähle #20 (Bild 008-018)',
+    desc: 'Individual faces visible — women, children, elderly. Armed escort in background. Assembly area.',
+    rationale: 'Same assembly area as #19. Shows faces of victims, likely unaware of what awaits. Armed German/Ukrainian escort visible.',
+    img: P.haehle + 'Kiew_Babyn_Yar_20_Bild_008_018.jpg'
+  }
 ];
 
 const cameraLayer = L.layerGroup();
 cameraPositions.forEach(cam => {
+  const confCls = cam.conf === 'dean' ? '' : ' approx';
   const confLabel = cam.conf === 'dean' ? 'DEAN-VERIFIED' : cam.conf === 'landmark' ? 'LANDMARK-IDENTIFIED' : 'APPROXIMATE';
-  // Photo thumbnail marker
+  const confCss = cam.conf;
   const icon = L.divIcon({
     className: 'waypoint-marker',
-    html: `<div class="cam-thumb" style="background-image:url(${cam.img})" title="${cam.title}"></div>`,
-    iconSize: [38, 38],
-    iconAnchor: [19, 19]
+    html: `<div class="cam-mk${confCls}" title="${cam.title}">&#x1F4F7;</div>`,
+    iconSize: [22, 22],
+    iconAnchor: [11, 11]
   });
   const popup = `
-    <span class="popup-conf ${cam.conf}">${confLabel}</span>
+    <span class="popup-conf ${confCss}">${confLabel}</span>
     <br><strong>${cam.title}</strong>
     <br>${cam.desc}
     <img class="popup-img" src="${cam.img}" alt="${cam.title}" onclick="openSingleLb('${cam.img}','${cam.title.replace(/'/g,"\\'")}')">
-    <div style="font-size:10px;color:#887b68;margin-top:4px;border-top:1px solid #28261f;padding-top:4px">
+    <div style="font-size:10px;color:#8b7b65;margin-top:4px;border-top:1px solid #302c24;padding-top:4px">
       <strong>Placement:</strong> ${cam.rationale}
     </div>
   `;
@@ -1087,39 +1330,115 @@ cameraPositions.forEach(cam => {
     .addTo(cameraLayer);
 });
 
-// ===== WITNESS LOCATIONS =====
+// === WITNESS / TESTIMONY LOCATIONS ===
 const witnessPositions = [
-  { id:'pronicheva-pit', name:'Dina Pronicheva', pos:[50.4732,30.4488], role:'Survivor \u2014 fell into the pit and escaped', date:'Sept 29, 1941', location:'Western spur / shooting pit', testimony:'\u201CIn this pit I saw heaps of bodies. I fell onto bodies that were still warm\u2026\u201D', source:'Testimony at Kiev war crimes trial, Jan 24, 1946 (USHMM pa15588)', rationale:'Led to edge of western spur. Dean\u2019s analysis places shooting site here.', conf:'dean' },
-  { id:'powa-quarry', name:'Albin Powa', pos:[50.4716,30.4516], role:'Police Battalion 45 \u2014 stationed at sand quarry', date:'Sept 29\u201330, 1941', location:'Sand quarry / undressing area', testimony:'\u201CIt was a sand quarry\u2026 the Jews had to undress at the end of the quarry.\u201D', source:'Statement, Feb 21, 1968 (BA-L B162/6664)', rationale:'Stationed at sand quarry entrance. Matches Dean\u2019s identification (BYHMC, p.3).', conf:'dean' },
-  { id:'trill-hill', name:'Viktor Trill', pos:[50.4726,30.4500], role:'Sonderkommando 4a driver', date:'Sept 29\u201330, 1941', location:'\u201CFeldherrnh\u00fcgel\u201D \u2014 plateau overlooking western spur', testimony:'\u201CBlobel was present at the execution site\u2026 The shooters had to take up position on top of the corpses.\u201D', source:'Statement, Jun 29, 1961 (BA-L B162/17922)', rationale:'Dean (BYHMC, p.7): elevated area between sand quarry and western spur.', conf:'dean' },
-  { id:'karrasch-quarry', name:'Erich Karrasch', pos:[50.4714,30.4520], role:'Police Battalion 303 \u2014 cordon duty', date:'Sept 29\u201330, 1941', location:'Sand quarry perimeter', testimony:'Described the undressing procedure and corridor toward the ravine.', source:'Statement, Nov 22, 1966 (BA-L B162/6673)', rationale:'Outer cordon at sand quarry. Dean (BYHMC, p.3) references his testimony.', conf:'dean' },
-  { id:'khoroshunova-home', name:'Iryna Khoroshunova', pos:[50.4555,30.4870], role:'Kyiv resident \u2014 diarist', date:'Sept 30 & Oct 2, 1941', location:'Lukyanivka neighbourhood (home)', testimony:'\u201C[Gunfire] can be heard from the direction of Lukyanivske cemetery\u2026\u201D', source:'Diary, USHMM RG-31.056; EHRI', rationale:'Lived in Lukyanivka district. Heard gunfire from direction of cemeteries/Babi Yar.', conf:'approx' },
-  { id:'sokolov-spur', name:'N.B. Sokolov', pos:[50.4730,30.4490], role:'Soviet POW \u2014 forced labor in ravine', date:'Sept\u2013Oct 1941', location:'Western spur (forced work detail)', testimony:'Described being forced to work under Waffen-SS guard in the western spur.', source:'Statement (SBU Archive, f. 5, spr. 55663, t. 17)', rationale:'POW forced to work in western spur. Dean (BYHMC, pp.8\u20139) places H\u00e4hle #16 here.', conf:'dean' }
+  {
+    id: 'pronicheva-pit',
+    name: 'Dina Pronicheva',
+    pos: [50.4732, 30.4488],
+    role: 'Survivor — fell into the pit and escaped',
+    date: 'Sept 29, 1941',
+    location: 'Western spur / shooting pit',
+    testimony: '"In this pit I saw heaps of bodies. I fell onto bodies that were still warm…"',
+    source: 'Testimony at Kiev war crimes trial, Jan 24, 1946 (USHMM pa15588)',
+    rationale: 'Pronicheva was led to the edge of the western spur ravine with other victims. She jumped/fell in and lay among the dead. Dean\'s analysis places the shooting site in the western spur — this location corresponds to the edge of the pit near Hähle #17.',
+    conf: 'dean'
+  },
+  {
+    id: 'powa-quarry',
+    name: 'Albin Powa',
+    pos: [50.4716, 30.4516],
+    role: 'Police Battalion 45 — stationed at sand quarry',
+    date: 'Sept 29–30, 1941',
+    location: 'Sand quarry / undressing area',
+    testimony: '"It was a sand quarry… the Jews had to undress at the end of the quarry, and went partly naked over a steep slope and disappeared into the adjacent valley."',
+    source: 'Statement, Feb 21, 1968 (BA-L B162/6664, pp. 611–615)',
+    rationale: 'Powa was stationed at the sand quarry entrance where victims were forced to undress. His description matches Dean\'s sand quarry identification on the 1943 aerial (BYHMC, p.3).',
+    conf: 'dean'
+  },
+  {
+    id: 'trill-hill',
+    name: 'Viktor Trill',
+    pos: [50.4726, 30.4500],
+    role: 'Sonderkommando 4a driver',
+    date: 'Sept 29–30, 1941',
+    location: '"Feldherrnhügel" — plateau overlooking western spur',
+    testimony: '"Blobel was present at the execution site… The shooters had to take up position on top of the corpses lying in the river bed."',
+    source: 'Statement, Jun 29, 1961 (BA-L B162/17922, pp. 245–247); also Jun 8, 1965 (BA-L B162/17938, p. 3547)',
+    rationale: 'Trill described officers on "Feldherrnhügel" (Field Marshal\'s Hill) — the plateau overlooking the western spur. Dean (BYHMC, p.7) identifies this as the elevated area between the sand quarry and the western spur.',
+    conf: 'dean'
+  },
+  {
+    id: 'karrasch-quarry',
+    name: 'Erich Karrasch',
+    pos: [50.4714, 30.4520],
+    role: 'Police Battalion 303 — cordon duty',
+    date: 'Sept 29–30, 1941',
+    location: 'Sand quarry perimeter',
+    testimony: 'Described the undressing procedure and the corridor through which victims were driven toward the ravine.',
+    source: 'Statement, Nov 22, 1966 (BA-L B162/6673, pp. 421ff.)',
+    rationale: 'Karrasch was part of the outer cordon at the sand quarry. Dean (BYHMC, p.3) references his testimony alongside Powa\'s regarding the undressing area.',
+    conf: 'dean'
+  },
+  {
+    id: 'khoroshunova-home',
+    name: 'Iryna Khoroshunova',
+    pos: [50.4555, 30.4870],
+    role: 'Kyiv resident — diarist',
+    date: 'Sept 30 & Oct 2, 1941',
+    location: 'Lukyanivka neighbourhood (home)',
+    testimony: '"[Gunfire] can be heard from the direction of Lukyanivske cemetery… They say the Jews have been shot."',
+    source: 'Diary, USHMM RG-31.056; EHRI',
+    rationale: 'Khoroshunova lived in the Lukyanivka district of Kyiv. She heard gunfire from the direction of the cemeteries/Babi Yar. Placed approximately in Lukyanivka, SE of the massacre site — she was not at the ravine but recorded what she could hear and learn from neighbors.',
+    conf: 'approx'
+  },
+  {
+    id: 'sokolov-spur',
+    name: 'N.B. Sokolov',
+    pos: [50.4730, 30.4490],
+    role: 'Soviet POW — forced labor in ravine',
+    date: 'Sept–Oct 1941',
+    location: 'Western spur (forced work detail)',
+    testimony: 'Described being forced to work under Waffen-SS guard in the western spur area.',
+    source: 'Statement (SBU Archive, f. 5, spr. 55663, t. 17, pp. 8–10)',
+    rationale: 'Sokolov was a POW forced to work in the western spur. Dean (BYHMC, pp.8–9) places Hähle #16 (008-014) showing a Waffen-SS soldier guarding POW work, consistent with Sokolov\'s account.',
+    conf: 'dean'
+  }
 ];
 
 const witnessLayer = L.layerGroup();
-witnessPositions.forEach(wit => {
-  const confLabel = wit.conf === 'dean' ? 'DEAN-VERIFIED' : wit.conf === 'approx' ? 'APPROXIMATE' : 'LANDMARK-IDENTIFIED';
+witnessPositions.forEach((wit, i) => {
+  const confLabel = wit.conf === 'dean' ? 'DEAN-VERIFIED' : wit.conf === 'landmark' ? 'LANDMARK-IDENTIFIED' : 'APPROXIMATE';
   const icon = L.divIcon({
     className: 'waypoint-marker',
     html: `<div class="wit-mk" title="${wit.name}">W</div>`,
-    iconSize: [20, 20], iconAnchor: [10, 10]
+    iconSize: [22, 22],
+    iconAnchor: [11, 11]
   });
   const popup = `
     <span class="popup-conf ${wit.conf}">${confLabel}</span>
     <br><strong>${wit.name}</strong>
     <div style="font-size:10px;color:#6a9ac8;margin:2px 0">${wit.role}</div>
-    <div style="font-size:10.5px;color:#b8ad9a;margin:4px 0"><strong>Location:</strong> ${wit.location}<br><strong>Date:</strong> ${wit.date}</div>
-    <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:13px;color:#c9a96e;border-left:2px solid #2a4a6a;padding:4px 0 4px 10px;margin:8px 0">${wit.testimony}</div>
-    <div style="font-size:10px;color:#887b68">${wit.source}</div>
-    <div style="font-size:10px;color:#887b68;margin-top:4px;border-top:1px solid #28261f;padding-top:4px"><strong>Placement:</strong> ${wit.rationale}</div>
+    <div style="font-size:10.5px;color:#b0a494;margin:4px 0"><strong>Location:</strong> ${wit.location}<br><strong>Date:</strong> ${wit.date}</div>
+    <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:13px;color:#c8b898;border-left:2px solid #2a4a6a;padding:4px 0 4px 10px;margin:8px 0">${wit.testimony}</div>
+    <div style="font-size:10px;color:#8b7b65">${wit.source}</div>
+    <div style="font-size:10px;color:#8b7b65;margin-top:4px;border-top:1px solid #302c24;padding-top:4px">
+      <strong>Placement:</strong> ${wit.rationale}
+    </div>
   `;
-  L.marker(wit.pos, { icon }).bindPopup(popup, { maxWidth: 300 }).addTo(witnessLayer);
+  L.marker(wit.pos, { icon })
+    .bindPopup(popup, { maxWidth: 300 })
+    .addTo(witnessLayer);
 });
 
-function openSingleLb(src, cap) { lbList = [[src, cap]]; lbIdx = 0; showLb(); }
+// Single-image lightbox helper for popups
+function openSingleLb(src, cap) {
+  lbList = [[src, cap]];
+  lbIdx = 0;
+  showLb();
+}
 
-// ===== LAYER CONTROL =====
+// === LAYER CONTROL (after all layers are defined) ===
 L.control.layers(
   { 'Satellite': sat, 'Dark': dark },
   {
@@ -1128,11 +1447,13 @@ L.control.layers(
     '1943 Luftwaffe Aerial (NE detail)': aerialNEOverlay,
     'Dean: Victim Route Reconstruction': deanRouteOverlay,
     'Dean: Camp Infrastructure': deanCampOverlay,
-    'H\u00e4hle Camera Positions': cameraLayer,
+    'Hähle Camera Positions': cameraLayer,
     'Witness Locations': witnessLayer
   },
   { position: 'topright', collapsed: false }
 ).addTo(map);
+
+// Enable camera + witness layers by default
 cameraLayer.addTo(map);
 witnessLayer.addTo(map);
 
@@ -1141,15 +1462,16 @@ const leg = L.control({position:'bottomleft'});
 leg.onAdd = function(){
   const d = L.DomUtil.create('div','map-legend');
   d.innerHTML = `<b>Legend</b><br>
-    <span class="lg-line" style="background:linear-gradient(90deg,#d4654a,#9b2020)"></span> March route<br>
-    <span class="lg-dot" style="background:#8b4513;border:1.5px solid rgba(237,230,216,0.8)"></span> Waypoint<br>
-    <span class="lg-dot" style="background-size:cover;background-image:url(${P.haehle}Kiew_Babyn_Yar_17_Bild_008-015.jpg);border:1.5px solid rgba(255,255,255,0.45)"></span> H\u00e4hle photo<br>
+    <span class="lg-line" style="background:linear-gradient(90deg,#c45c3a,#8b1a1a)"></span> March route<br>
+    <span class="lg-dot" style="background:#8b4513;border:1.5px solid #f0e8dc"></span> Waypoint<br>
+    <span class="lg-dot" style="background:#3a6a3a;border:1.5px solid #8fbc8f;border-radius:3px"></span> Hähle camera position<br>
     <span class="lg-dot" style="background:#2a4a6a;border:1.5px solid #6a9ac8"></span> Witness location<br>
-    <span class="lg-dot" style="background:#5a5040;border:1.5px solid #887b68;width:7px;height:7px"></span> Modern memorial`;
+    <span class="lg-dot" style="background:#5a5040;border:1.5px solid #8b7b65;width:8px;height:8px"></span> Modern memorial`;
   return d;
 };
 leg.addTo(map);
 
+// distance control
 const distCtrl = L.control({position:'bottomright'});
 distCtrl.onAdd = function(){
   const d = L.DomUtil.create('div','dist-badge');
@@ -1158,15 +1480,19 @@ distCtrl.onAdd = function(){
 };
 distCtrl.addTo(map);
 
-// ===== BUILD PANEL: ROUTE TAB =====
+// === BUILD PANEL: ROUTE TAB ===
 const listEl = document.getElementById('wp-list');
 W.forEach(wp => {
   const card = document.createElement('div');
-  card.className = 'wp-card'; card.id = 'wp-' + wp.n;
+  card.className = 'wp-card';
+  card.id = 'wp-' + wp.n;
   if (wp.final) card.dataset.final = 'true';
   card.onclick = () => activateWp(wp.n);
+
+  // Distance from start to this waypoint
   const wpDist = distToWp(wp.pos);
   const distStr = wpDist < 100 ? 'Start' : (wpDist/1000).toFixed(1) + ' km';
+
   let photosHtml = '';
   if (wp.photos.length) {
     const imgs = wp.photos.map(([src,cap],i) =>
@@ -1174,6 +1500,7 @@ W.forEach(wp => {
     ).join('');
     photosHtml = `<div class="wp-photos">${imgs}</div>`;
   }
+
   card.innerHTML = `
     <span class="wp-num">${wp.n}</span>
     <span class="wp-title">${wp.title}</span><span class="wp-dist">${distStr}</span>
@@ -1187,12 +1514,15 @@ W.forEach(wp => {
   listEl.appendChild(card);
 });
 
-// ===== BUILD PANEL: PHOTOS TAB =====
+// === BUILD PANEL: PHOTOS TAB ===
 const pgEl = document.getElementById('photo-groups');
 photoGroups.forEach((g, gi) => {
   const sec = document.createElement('div');
   sec.className = 'doc-card';
-  sec.onclick = function(e) { if (e.target.tagName === 'IMG') return; this.classList.toggle('expanded'); };
+  sec.onclick = function(e) {
+    if (e.target.tagName === 'IMG') return;
+    this.classList.toggle('expanded');
+  };
   const imgs = g.photos.map(([src,cap],i) =>
     `<img src="${src}" alt="${cap}" title="${cap}" onclick="event.stopPropagation();openLbGroup(${gi},${i},'pg')">`
   ).join('');
@@ -1207,16 +1537,23 @@ photoGroups.forEach((g, gi) => {
   pgEl.appendChild(sec);
 });
 
-// ===== BUILD PANEL: EVIDENCE THREAD =====
+// === BUILD PANEL: TWEET THREAD ===
 const threadEl = document.getElementById('thread');
 const totalTweets = TWEETS.length;
 TWEETS.forEach((tw, ti) => {
   const tweet = document.createElement('div');
   tweet.className = 'tweet';
+
   let germanHtml = '';
-  if (tw.german) { germanHtml = `<div class="tweet-german-label">Original German:</div><div class="tweet-german">${tw.german}</div>`; }
+  if (tw.german) {
+    germanHtml = `<div class="tweet-german-label">Original German:</div><div class="tweet-german">${tw.german}</div>`;
+  }
+
   let quoteHtml = '';
-  if (tw.quote) { quoteHtml = `<div class="tweet-quote">${tw.quote}</div>`; }
+  if (tw.quote) {
+    quoteHtml = `<div class="tweet-quote">${tw.quote}</div>`;
+  }
+
   let imgsHtml = '';
   if (tw.imgs && tw.imgs.length) {
     const gridClass = 'g' + Math.min(tw.imgs.length, 4);
@@ -1225,6 +1562,7 @@ TWEETS.forEach((tw, ti) => {
     ).join('');
     imgsHtml = `<div class="tweet-imgs ${gridClass}">${imgTags}</div>`;
   }
+
   tweet.innerHTML = `
     <div class="tweet-avatar ${tw.label}">${ti+1}</div>
     <div class="tweet-header">
@@ -1245,23 +1583,30 @@ TWEETS.forEach((tw, ti) => {
   threadEl.appendChild(tweet);
 });
 
-// ===== INTERACTION =====
+// === INTERACTION ===
 let activeN = null;
+
 function activateWp(n) {
   document.querySelectorAll('.wp-card').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.mk').forEach(m => m.classList.remove('active'));
+
   if (activeN === n) { activeN = null; return; }
   activeN = n;
+
   switchTab('route');
+
   const card = document.getElementById('wp-' + n);
   card.classList.add('active');
   card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
   const mkEl = document.getElementById('mk-' + n);
   if (mkEl) mkEl.classList.add('active');
+
   const wp = W.find(w => w.n === n);
   map.flyTo(wp.pos, 16, { duration: 0.6 });
 }
 
+// === TABS ===
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -1269,14 +1614,19 @@ function switchTab(tab) {
   document.getElementById('tab-' + tab).classList.add('active');
 }
 
-// ===== LIGHTBOX =====
+// === LIGHTBOX WITH NAVIGATION ===
 let lbList = [];
 let lbIdx = 0;
 
 function openLbGroup(groupIdx, photoIdx, type) {
-  if (type === 'wp') { const wp = W.find(w => w.n === groupIdx); lbList = wp ? wp.photos : []; }
-  else if (type === 'pg') { lbList = photoGroups[groupIdx].photos; }
-  else if (type === 'tw') { lbList = TWEETS[groupIdx].imgs || []; }
+  if (type === 'wp') {
+    const wp = W.find(w => w.n === groupIdx);
+    lbList = wp ? wp.photos : [];
+  } else if (type === 'pg') {
+    lbList = photoGroups[groupIdx].photos;
+  } else if (type === 'tw') {
+    lbList = TWEETS[groupIdx].imgs || [];
+  }
   lbIdx = photoIdx;
   showLb();
 }
@@ -1285,19 +1635,17 @@ function showLb() {
   if (!lbList.length) return;
   const [src, cap] = lbList[lbIdx];
   document.getElementById('lb-img').src = src;
-  document.getElementById('lb-cap').innerHTML = cap;
-  document.getElementById('lb-counter').textContent = lbList.length > 1 ? `${lbIdx+1} / ${lbList.length}` : '';
-  const lb = document.getElementById('lb');
-  lb.classList.add('active');
-  requestAnimationFrame(() => requestAnimationFrame(() => lb.classList.add('show')));
+  document.getElementById('lb-cap').innerHTML = cap + (lbList.length > 1 ? ` &nbsp;(${lbIdx+1}/${lbList.length})` : '');
+  document.getElementById('lb').classList.add('active');
 }
 
-function lbNav(dir) { lbIdx = (lbIdx + dir + lbList.length) % lbList.length; showLb(); }
+function lbNav(dir) {
+  lbIdx = (lbIdx + dir + lbList.length) % lbList.length;
+  showLb();
+}
 
 function closeLb() {
-  const lb = document.getElementById('lb');
-  lb.classList.remove('show');
-  setTimeout(() => lb.classList.remove('active'), 300);
+  document.getElementById('lb').classList.remove('active');
 }
 
 document.addEventListener('keydown', e => {
@@ -1306,6 +1654,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') lbNav(1);
 });
 
+// === PANEL TOGGLE ===
 function togglePanel() {
   document.getElementById('panel').classList.toggle('collapsed');
   setTimeout(() => map.invalidateSize(), 350);
