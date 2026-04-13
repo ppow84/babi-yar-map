@@ -780,6 +780,24 @@ const labels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/
   maxZoom: 20, opacity: 0.5
 });
 
+// === 1941 LUFTWAFFE BILDPLANSKIZZE ===
+// Georeferenced from Gauss-Kruger Zone 6 (CM 33E) grid: easting 6313-6332, northing 5591-5598
+// Source: David Rumsey Map Collection, Bildplanskizze der Stadt Kiew 1:20,000 (Sheet 2)
+const luftwaffe1941Bounds = [[50.427, 30.362], [50.495, 30.640]];
+const luftwaffe1941 = L.imageOverlay(
+  'luftwaffe_kiev_1941.jpg',
+  luftwaffe1941Bounds,
+  { opacity: 0.92, interactive: false, attribution: 'Luftwaffe Bildplanskizze 1941, David Rumsey Map Collection' }
+);
+
+// Dark base for the 1941 map (so areas outside the photo aren't white)
+const dark1941 = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OSM &copy; CARTO', maxZoom: 20
+});
+
+// Composite layer group: dark base + 1941 photo overlay
+const luftwaffe1941Base = L.layerGroup([dark1941, luftwaffe1941]);
+
 const map = L.map('map', {
   center: [50.4670, 30.4660],
   zoom: 15,
@@ -1440,7 +1458,7 @@ function openSingleLb(src, cap) {
 
 // === LAYER CONTROL (after all layers are defined) ===
 L.control.layers(
-  { 'Satellite': sat, 'Dark': dark },
+  { 'Satellite': sat, 'Dark': dark, '1941 Luftwaffe Map': luftwaffe1941Base },
   {
     'Labels': labels,
     '1943 Luftwaffe Aerial (full)': aerialOverlay,
