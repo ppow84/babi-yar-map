@@ -787,16 +787,8 @@ const luftwaffe1941Bounds = [[50.427, 30.362], [50.495, 30.640]];
 const luftwaffe1941 = L.imageOverlay(
   'luftwaffe_kiev_1941.jpg',
   luftwaffe1941Bounds,
-  { opacity: 0.92, interactive: false, attribution: 'Luftwaffe Bildplanskizze 1941, David Rumsey Map Collection' }
+  { opacity: 0.85, interactive: false, attribution: 'Luftwaffe Bildplanskizze 1941, David Rumsey Map Collection' }
 );
-
-// Dark base for the 1941 map (so areas outside the photo aren't white)
-const dark1941 = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; OSM &copy; CARTO', maxZoom: 20
-});
-
-// Composite layer group: dark base + 1941 photo overlay
-const luftwaffe1941Base = L.layerGroup([dark1941, luftwaffe1941]);
 
 const map = L.map('map', {
   center: [50.4670, 30.4660],
@@ -839,7 +831,8 @@ const deanCampOverlay = L.imageOverlay(
   { opacity: 0.8, interactive: false }
 );
 
-// Enable full aerial overlay by default
+// Enable overlays by default
+luftwaffe1941.addTo(map);
 aerialOverlay.addTo(map);
 
 // NOTE: L.control.layers added after cameraLayer & witnessLayer are defined (below memorials)
@@ -1458,9 +1451,10 @@ function openSingleLb(src, cap) {
 
 // === LAYER CONTROL (after all layers are defined) ===
 L.control.layers(
-  { 'Satellite': sat, 'Dark': dark, '1941 Luftwaffe Map': luftwaffe1941Base },
+  { 'Satellite': sat, 'Dark': dark },
   {
     'Labels': labels,
+    '1941 Luftwaffe City Map': luftwaffe1941,
     '1943 Luftwaffe Aerial (full)': aerialOverlay,
     '1943 Luftwaffe Aerial (NE detail)': aerialNEOverlay,
     'Dean: Victim Route Reconstruction': deanRouteOverlay,
@@ -1677,6 +1671,64 @@ function togglePanel() {
   document.getElementById('panel').classList.toggle('collapsed');
   setTimeout(() => map.invalidateSize(), 350);
 }
+
+// === DRAGGABLE POPUPS ===
+map.on('popupopen', function(e) {
+  const popup = e.popup;
+  const container = popup._container;
+  if (!container) return;
+
+  const wrapper = container.querySelector('.leaflet-popup-content-wrapper');
+  if (!wrapper) return;
+
+  // Style the wrapper cursor to indicate draggability
+  wrapper.style.cursor = 'grab';
+
+  let isDragging = false;
+  let startX, startY;
+  let origLeft, origTop;
+
+  wrapper.addEventListener('mousedown', function(ev) {
+    // Don't drag if clicking on images or links
+    if (ev.target.tagName === 'IMG' || ev.target.tagName === 'A') return;
+
+    isDragging = true;
+    wrapper.style.cursor = 'grabbing';
+
+    startX = ev.clientX;
+    startY = ev.clientY;
+
+    const rect = container.style;
+    const transform = window.getComputedStyle(container).transform;
+    // Get current position
+    origLeft = container.offsetLeft;
+    origTop = container.offsetTop;
+
+    // Detach popup from map panning
+    L.DomEvent.disableClickPropagation(container);
+
+    ev.preventDefault();
+    ev.stopPropagation();
+  });
+
+  document.addEventListener('mousemove', function moveHandler(ev) {
+    if (!isDragging) return;
+    const dx = ev.clientX - startX;
+    const dy = ev.clientY - startY;
+    container.style.left = (origLeft + dx) + 'px';
+    container.style.top = (origTop + dy) + 'px';
+    // Hide the tip/arrow while dragging since it no longer points correctly
+    const tip = container.querySelector('.leaflet-popup-tip-container');
+    if (tip) tip.style.display = 'none';
+    ev.preventDefault();
+  });
+
+  document.addEventListener('mouseup', function upHandler() {
+    if (!isDragging) return;
+    isDragging = false;
+    wrapper.style.cursor = 'grab';
+  });
+});
 </script>
 </body>
 </html>
