@@ -790,6 +790,16 @@ const luftwaffe1941 = L.imageOverlay(
   { opacity: 0.85, interactive: false, attribution: 'Luftwaffe Bildplanskizze 1941, David Rumsey Map Collection' }
 );
 
+// === 1941 GERMAN STADTPLAN (drawn city map with street names) ===
+// Wehrmacht Kriegs-Karten-u. Vermessungs-Amt Kiew, 1:25,000
+// Source: Museum Berlin-Karlshorst (CC BY-NC-SA)
+const stadtplanBounds = [[50.3928, 30.4213], [50.4872, 30.6187]];
+const stadtplan1941 = L.imageOverlay(
+  'stadtplan_kiew_1941.jpg',
+  stadtplanBounds,
+  { opacity: 0.85, interactive: false, attribution: 'Stadtplan Kiew 1941, Museum Berlin-Karlshorst' }
+);
+
 const map = L.map('map', {
   center: [50.4670, 30.4660],
   zoom: 15,
@@ -1455,6 +1465,7 @@ L.control.layers(
   {
     'Labels': labels,
     '1941 Luftwaffe City Map': luftwaffe1941,
+    '1941 German Stadtplan': stadtplan1941,
     '1943 Luftwaffe Aerial (full)': aerialOverlay,
     '1943 Luftwaffe Aerial (NE detail)': aerialNEOverlay,
     'Dean: Victim Route Reconstruction': deanRouteOverlay,
